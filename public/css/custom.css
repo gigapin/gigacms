@@ -1,0 +1,95 @@
+#editorjs {
+	background-color: antiquewhite;
+	width: 100%;
+	height: 200px;
+	border: 1px solid goldenrod;
+	padding: 1em;
+}
+
+.button-upload {
+	margin: 10px;
+	width: 150px;
+	padding: 4px;
+}
+
+.box-image {
+	max-width: 50px;
+	height: auto;
+	margin: 10px;
+}
+
+img:focus {
+	border: 1px solid red;
+}
+
+.post-footer {
+	display: flex;
+  	justify-content: space-between;
+}
+
+.post-footer > div {
+	text-align: center;
+	color: gray;
+}
+
+.link-card-title {
+	font-size: 1.5rem;;
+}
+
+.content {
+	margin: 0 1rem 0 1rem;
+	padding: 0.5rem;
+}
+
+.content-header {
+	margin: 0 .5rem 0 .5rem;
+}
+
+.content-header h1 {
+	margin-top: 0.2rem;
+	margin-left: 0;
+	font-weight: 500;
+	font-size: 2rem;
+}
+
+.card-body-collapsed {
+	max-height: 450px;
+	overflow: auto;
+}
+
+.media-thumbnail {
+	max-width: 100%;
+	max-height: auto;
+	margin: 20px 0;
+}
+
+.featured-img {
+	margin-bottom: 10px;
+}
+
+#wrapper-tags {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#wrapper-tags > option {
+	margin: 5px;
+}
+
+.bg-tags {
+	width: 100%;
+	background-color:coral;
+	padding: .5rem;
+	margin: .5rem;
+	color: black;
+}
+
+.bg-tags:hover {
+	cursor: pointer;
+}
+
+.icon-tags {
+	float: right;
+	margin-right: .5rem;
+	cursor: pointer;
+}
