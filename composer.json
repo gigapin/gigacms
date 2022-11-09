@@ -9,7 +9,8 @@
   "require": {
     "ext-pdo": "*",
     "twig/twig": "^3.0",
-    "tinymce/tinymce": "^6.2"
+    "tinymce/tinymce": "^6.2",
+    "vlucas/phpdotenv": "^5.5"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5"
