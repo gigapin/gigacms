@@ -59,7 +59,7 @@ class LoginController extends Controller
 	 */
 	public function login(): mixed
 	{
-		return view('login/login', [
+		return view('auth/login', [
 			'token' => CSRFToken::token()
 		]);
 	}
@@ -83,7 +83,7 @@ class LoginController extends Controller
 			]
 		]);
 		if ($errors) {
-			return view('login/login', ['errors' => $errors]);
+			return view('auth/login', ['errors' => $errors]);
 		}
 		
 		try {	
@@ -108,7 +108,7 @@ class LoginController extends Controller
 	 */
 	public function logout(): mixed
 	{
-		Session::destroy('user');
+		Session::remove('user');
 		return redirect('login');
 	}
 }

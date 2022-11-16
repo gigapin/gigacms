@@ -13,7 +13,7 @@
         <p>Are you sure to delete this category?</p>
       </div>
 
-      <form action="/categories/delete/<?= $category->id ?>" method="category">
+      <form action="/categories/delete/<?= $category->id ?>" method="POST">
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-outline-dark">Confirm delete</button>
@@ -23,7 +23,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<form action="/categories/<?= $category->id ?>" method="category">
+<form action="/categories/<?= $category->id ?>" method="POST">
   <input type="hidden" name="_token" value="<?= isset($token) ? $token : "" ?>">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -115,7 +115,7 @@
                 <?php endif ?>
                 <?php if ($category->category_status === 'trashed') : ?>
                   <div class="form-group mb-0">
-                    <input type="radio" name="category_status" value="published">&nbsp;published
+                    <input type="radio" name="category_status" value="published">&nbsp;Published
                   </div>
                   <div class="form-group mb-0">
                     <input type="radio" name="category_status" value="drafted">&nbsp;Drafted

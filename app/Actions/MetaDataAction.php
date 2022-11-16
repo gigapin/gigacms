@@ -88,6 +88,10 @@ class MetaDataAction
    */
   public function getMetadataWhere(int $postId): mixed
   {
-    return $this->metadata->findWhere('post_id', $postId);
+    $metadata = $this->metadata->findWhere('post_id', $postId); 
+    if (! $metadata) {
+      return null;
+    }
+    return $metadata;
   }
 }

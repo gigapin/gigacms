@@ -84,4 +84,15 @@ class CategoryPostAction
   {
     return $this->categoryPost->category();
   }
+
+  /**
+   * Delete record of a post linked to a category.
+   *
+   * @param integer $id
+   * @return mixed
+   */
+  public function deleteCategoryPost(int $id): mixed
+  {
+    return $this->categoryPost->delete($this->categoryPost->findWhere('post_id', $id)->id);
+  }
 }

@@ -19,6 +19,8 @@ use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\LibraryController;
+use App\Controllers\Admin\MenuController;
+use App\Controllers\Admin\MenuItemController;
 use App\Controllers\Admin\TagController;
 use App\Controllers\Backend\SettingController;
 
@@ -47,6 +49,22 @@ $route->get('/posts/edit/{id}', [PostController::class, 'edit']);
 $route->post('/posts/{id}', [PostController::class, 'update']);
 $route->post('/posts/delete/{id}', [PostController::class, 'delete']);
 $route->get('/posts/{slug}', [PostController::class, 'show']);
+
+/** MENUS */
+$route->get('/menus', [MenuController::class, 'index']);
+$route->get('/menus/create', [MenuController::class, 'create']);
+$route->post('/menus', [MenuController::class, 'store']);
+$route->get('/menus/edit/{id}', [MenuController::class, 'edit']);
+$route->post('/menus/{id}', [MenuController::class, 'update']);
+$route->post('/menus/delete/{id}', [MenuController::class, 'delete']);
+
+/** MENU ITEMS */
+$route->get('/menu-items', [MenuItemController::class, 'index']);
+$route->get('/menu-items/create', [MenuItemController::class, 'create']);
+$route->post('/menu-items', [MenuItemController::class, 'store']);
+$route->get('/menu-items/edit/{id}', [MenuItemController::class, 'edit']);
+$route->post('/menu-items/{id}', [MenuItemController::class, 'update']);
+$route->post('/menu-items/delete/{id}', [MenuItemController::class, 'delete']);
 
 /** CATEGORIES */
 $route->get('/categories', [CategoryController::class, 'index']);

@@ -151,7 +151,11 @@
 										<!-- textarea -->
 										<div class="form-group">
 											<label>Excerpt</label>
-											<textarea class="form-control" rows="3" name="" placeholder="Enter ..."></textarea>
+											<textarea class="form-control" rows="3" name="post_excerpt" placeholder="Enter ...">
+												<?php if (isset($post->post_excerpt)): ?>
+													<?= $post->post_excerpt; ?>
+												<?php endif; ?>
+											</textarea>
 										</div>
 									</div>
 								</div>

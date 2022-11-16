@@ -84,7 +84,7 @@ class RegisterController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->user = new User();
+		$this->user = new User('users');
 	}
 
 	/**
@@ -94,7 +94,7 @@ class RegisterController extends Controller
 	 */
 	public function register(): mixed
 	{
-		return view('login/register', [
+		return view('auth/register', [
 			'token' => CSRFToken::token()
 		]);
 	}
@@ -124,8 +124,8 @@ class RegisterController extends Controller
 		if ($this->post('password') !== $this->post('password-confirm')) {
 			$errors[] = "Passoword not matched!";
 		}
-		if (count($errors) > 0) {
-			return view('login/register', ['errors' => $errors]);
+		if ($errors) {
+			return view('auth/register', ['errors' => $errors]);
 		}
 		
 		$data = [

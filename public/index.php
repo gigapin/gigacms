@@ -13,6 +13,9 @@ $root = realpath(dirname(__FILE__));
 require_once  $root . "/../vendor/autoload.php";
 require $root . "/../helpers/functions.php";
 
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
 use Src\Application\Application;
 
 $app = new Application();

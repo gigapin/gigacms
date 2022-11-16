@@ -16,13 +16,17 @@ use Exception;
 use Src\CSRFToken;
 use Src\Controller;
 use App\Models\Post;
+use Src\Http\Request;
+use App\Models\Access;
+use App\Models\Status;
 use Src\Http\Redirect;
 use App\Models\Comment;
 use App\Models\Category;
 use Src\Session\Session;
 use App\Actions\MediaAction;
-use App\Actions\CategoryPostAction;
 use App\Actions\MetaDataAction;
+use App\Actions\CategoryPostAction;
+use Src\Validation\ValidateRequest;
 
 /**
  * 
@@ -34,7 +38,7 @@ use App\Actions\MetaDataAction;
 class PostController extends Controller
 {
   /** @var object */
-  private object $post, $category, $categoryPost, $media, $comment, $metadata;
+  private object $post, $category, $categoryPost, $media, $comment, $metadata, $access, $status;
 
   /**
    * Constructor
@@ -47,6 +51,8 @@ class PostController extends Controller
     $this->media = new MediaAction();
     $this->comment = new Comment('comments');
     $this->metadata = new MetaDataAction();
+    $this->access = new Access('access');
+    $this->status = new Status('status');
   }
 
   /**
@@ -56,8 +62,8 @@ class PostController extends Controller
    */
   public function index(): mixed
   {
-    $posts = $this->post->findAll();
-    if (!Session::has('user')) {
+    $posts = $this->post->findAllWhere('user_id', Auth::id());
+    if (! Session::has('user')) {
       return redirect('login');
     }
 
@@ -80,7 +86,9 @@ class PostController extends Controller
       'token' => CSRFToken::token(),
       'categories' => $this->category->findAll(),
       'posts' => $this->post->findAll(),
-      'old' => Session::get('data-form')
+      'old' => Session::get('data-form'),
+      'list_status' => $this->status->findAll(),
+      'list_access' => $this->access->findAll()
     ]);
   }
 
@@ -90,9 +98,9 @@ class PostController extends Controller
    * @access private
    * @return array
    */
-  private function validate(): mixed
+  private function validateRule(): mixed
   {
-    $errors = $this->request()->validate([
+    $errors = [
       'post_title' => [
         'required' => true,
         'max' => 50,
@@ -110,47 +118,11 @@ class PostController extends Controller
       'comment_status' => [
         'required' => true
       ]
-    ]);
-    
+    ];
     return $errors;
   }
 
-  /**
-   * Sessions about validation data
-   * 
-   * @access private
-   * @return mixed
-   */
-  private function storingSession(): mixed
-  {
-    if ($this->validate() !== null) {
-      Session::remove('data-form');
-      Session::set('data-form', $this->request()->all());
-      return Redirect::to('posts/create');
-    } elseif (Session::has('data-form')) {
-        Session::remove('data-form');
-        Session::remove('errors');
-    } else {
-      return null;
-    }
-  }
-
-  /**
-   * Update sessions for validation data.
-   *
-   * @param object $updatePost
-   * @return mixed
-   */
-  private function updateSession(object $updatePost): mixed
-  {
-    if ($this->validate() !== null) {
-      return redirect('posts/edit/' . $updatePost->post_name);
-    } elseif (Session::has('errors')) {
-      Session::remove('errors');
-    } else {
-      return null;
-    }
-  }
+ 
 
   /**
    * Store a newly created resource in storage.
@@ -159,26 +131,10 @@ class PostController extends Controller
    */
   public function store(): mixed
   {
-    $this->storingSession();
+    
+    ValidateRequest::storingSession($this->validateRule());
 
-    $guid = $this->request()->site() . "/" . slug($this->post('post_title'));
-    $this->post->insert([
-      'user_id' => Auth::id(),
-      'post_date' => $this->post('post_date') !== '' ? $this->post('post_date') : null,
-      'post_title' => $this->post('post_title'),
-      'post_content' => $this->post('post_content'),
-      'post_excerpt' => $this->post('post_excerpt') !== "" ? $this->post('post_excerpt') : null,
-      'post_status' => $this->post('post_status'),
-      'comment_status' => $this->post('comment_status'),
-      'post_password' => $this->post('post_password') !== '' ? password_hash($this->post('post_password'), PASSWORD_DEFAULT) : null,
-      'post_access' => $this->post('post_access'),
-      'post_name' => slug($this->post('post_title')),
-      'post_parent' => $this->post('post_parent') !== '' ? $this->post('post_parent') : null,
-      'guid' => $guid,
-      'deleted_at' => null,
-      'created_at' => setDate(),
-      'updated_at' => setDate(),
-    ]);
+    $this->post->insert($this->getDataFromForm());
 
     $postSaved = $this->post->findWhere('post_title', $this->post('post_title'));
 
@@ -239,7 +195,7 @@ class PostController extends Controller
     $post = $this->post->findWhereAnd('post_name', $slug, 'user_id', Auth::id());
 
     try {
-      if (!$post) {
+      if (! $post) {
         throw new Exception('Post not found');
       }
 
@@ -266,27 +222,9 @@ class PostController extends Controller
   public function update(int $id): mixed
   {
     $updatePost = $this->post->findById($id);
-    $this->updateSession($updatePost);
+    ValidateRequest::updateSession($updatePost, $this->validateRule());
 
-    $guid = $this->request()->site() . "/" . slug($this->post('post_title'));
-    $data = [
-      'user_id' => Auth::id(),
-      'post_date' => $this->post('post_date') !== '' ? $this->post('post_date') : null,
-      'post_title' => $this->post('post_title'),
-      'post_content' => $this->post('post_content'),
-      'post_excerpt' => $this->post('post_excerpt') !== '' ? $this->post('post_excerpt') : null,
-      'post_status' => $this->post('post_status'),
-      'comment_status' => $this->post('comment_status'),
-      'post_password' => $this->post('post_password') !== '' ? password_hash($this->post('post_password'), PASSWORD_DEFAULT) : null,
-      'post_access' => $this->post('post_access'),
-      'post_name' => slug($this->post('post_title')),
-      'post_parent' => $this->post('post_parent') !== '' ? $this->post('post_parent') : null,
-      'guid' => $guid,
-      'deleted_at' => null,
-      'updated_at' => setDate(),
-    ];
-
-    $this->post->update($id, $data);
+    $this->post->update($id, $this->getDataFromForm());
     $postId = $this->post->findById($id);
 
     $this->media->updateFile($postId->id);
@@ -312,15 +250,42 @@ class PostController extends Controller
     $post = $this->post->findById($id);
     try {
       if (! $post) {
-        throw new Exception('Post not found');
+        throw new \Exception('Post not found');
       }
 
-      $this->categoryPost->delete($this->categoryPost->findWhere('post_id', $id)->id);
+      $this->categoryPost->deleteCategoryPost($id);
       $this->post->delete($id);
 
       return Redirect::to('posts');
-    } catch (Exception $exc) {
+    } catch (\Exception $exc) {
       printf("%s", $exc->getMessage());
     }
+  }
+
+  /**
+   * Get data from a form.
+   *
+   * @access private
+   * @return array
+   */
+  private function getDataFromForm(): array
+  {
+    $guid = $this->request()->site() . "/" . slug($this->post('post_title'));
+    return [
+      'user_id' => Auth::id(),
+      'post_date' => $this->post('post_date') !== '' ? $this->post('post_date') : null,
+      'post_title' => $this->post('post_title'),
+      'post_content' => $this->post('post_content'),
+      'post_excerpt' => $this->post('post_excerpt') !== '' ? $this->post('post_excerpt') : null,
+      'post_status' => $this->post('post_status'),
+      'comment_status' => $this->post('comment_status'),
+      'post_password' => $this->post('post_password') !== '' ? password_hash($this->post('post_password'), PASSWORD_DEFAULT) : null,
+      'post_access' => $this->post('post_access'),
+      'post_name' => slug($this->post('post_title')),
+      'post_parent' => $this->post('post_parent') !== '' ? $this->post('post_parent') : null,
+      'guid' => $guid,
+      'deleted_at' => null,
+      'updated_at' => setDate(),
+    ];
   }
 }

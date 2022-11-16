@@ -23,7 +23,7 @@ use Src\Validation\ValidateRequest;
  */
 class Request
 {
-  use ValidateRequest;
+  //use ValidateRequest;
 
   /**
    * Storing $_REQUEST value.
@@ -47,9 +47,10 @@ class Request
    * All request methods.
    *
    * @param array $data
+   * @static
    * @return array
    */
-  public function all(array $data = []): array
+  public static function all(array $data = []): array
   {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $request = filter_input_array(INPUT_POST);
@@ -112,9 +113,10 @@ class Request
    * Get data from POST method where name attribute is an array of values.
    *
    * @param string $values
+   * @static
    * @return mixed
    */
-  public function multiPost(string $values): mixed
+  public static function multiPost(string $values): mixed
   {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       CSRFToken::verifyToken();
@@ -153,19 +155,20 @@ class Request
   /**
    * Get what type of method has been request.
    *
+   * @static
    * @return string
    */
-  public function method(): string
+  public static function method(): string
   {
     return strtolower($_SERVER['REQUEST_METHOD']);
   }
 
   /**
    * Return URI.
-   *
+   * @static
    * @return string
    */
-  public function uri(): string
+  public static function uri(): string
   {
     return $_SERVER['REQUEST_URI'];
   }
@@ -173,9 +176,10 @@ class Request
   /**
    * Get name of the server host.
    *
+   * @static
    * @return string
    */
-  public function site(): string
+  public static function site(): string
   {
     return $_SERVER['SERVER_NAME'] . "/";
   }
@@ -206,7 +210,7 @@ class Request
    * @return mixed
    * @throws \Exception
    */
-  public function validate(array $data): mixed
+  public static function validate(array $data): mixed
   {
     $input = array();
 
@@ -229,7 +233,7 @@ class Request
           $v['method'][$x] = $v['rule'][$x];
         }
 
-        $this->callRule($data, $v['method'][$x], $k, $v['value'], $v['rule'][$x]);
+        self::callRule($data, $v['method'][$x], $k, $v['value'], $v['rule'][$x]);
       }
     }
 

@@ -42,17 +42,14 @@ class CategoryController extends Controller
 	/**
 	 * Set rules for validation data.
 	 *
-	 * @return array
+	 * @return array|null
 	 */
-	private function validation(): array
+	private function validation(): ?array
 	{
 		$errors = $this->request()->validate([
 			'category_name' => [
 				'required' => true,
-				'max' => 30
-			],
-			'category_description' => [
-				'max' => 150
+				'max' => 30,
 			]
 		]);
 
@@ -101,14 +98,14 @@ class CategoryController extends Controller
       Session::remove('errors');
 		}
 
-		$date = date('Y-m-d H:i:s', time());
 		$this->category->insert([
 			'user_id' => Auth::id(),
 			'category_name' => $this->post('category_name'),
 			'category_slug' => slug($this->post('category_name')),
 			'category_description' => $this->post('category_description') !== '' ? $this->post('category_description') : null,
-			'created_at' => $date,
-			'updated_at' => $date
+			'category_status' => $this->post('category_status'),
+			'created_at' => setDate(),
+			'updated_at' => setDate()
 		]);
 
 		Session::setFlashMessage('FLASH_SUCCESS', 'Category created successfully');
@@ -125,6 +122,7 @@ class CategoryController extends Controller
 	 */
 	public function edit(string $slug): mixed
 	{
+		
 		$categoryId = $this->category->findWhere('category_slug', $slug);
 		
 		try {
@@ -152,21 +150,22 @@ class CategoryController extends Controller
 	public function update(int $id): mixed
 	{
 		$updatedId = $this->category->findById($id);
+		
 		if ($this->validation()) {
 			Session::remove('data-form');
       Session::set('data-form', $this->request()->all());
-			return redirect('categories/edit/' . $updatedId->slug);
+			return redirect("categories/edit/$updatedId->category_slug");
 		} else {
 			Session::remove('data-form');
       Session::remove('errors');
 		}
 
-		$date = date('Y-m-d H:i:s', time());
 		$data = [
 			'category_name' => $this->post('category_name'),
 			'category_slug' => slug($this->post('category_name')),
 			'category_description' => $this->post('category_description'),
-			'updated_at' => $date
+			'category_status' => $this->post('category_status'),
+			'updated_at' => setDate()
 		];
 
 		$this->category->update($id, $data);

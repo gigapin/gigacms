@@ -307,7 +307,7 @@ trait UploadFile
   public function moveUploadedFile(mixed $fileName): mixed
   {
     $dir = __DIR__ . $this->getMovePathFile();
-    if (!is_dir($dir)) {
+    if (! is_dir($dir)) {
       mkdir($dir);
     }
 

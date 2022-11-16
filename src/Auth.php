@@ -44,12 +44,20 @@ class Auth
 	/**
 	 * Get id from user authenticated.
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public static function id(): mixed
 	{
 		$user = Session::get('user');
-		return self::init()->findWhere('username', $user)->id;
+		try {
+			if (! $user) {
+				throw new \Exception('User Not Found');
+			}
+			return self::init()->findWhere('username', $user)->id;
+		} catch (\Exception $exc) {
+			printf('%s', $exc->getMessage());
+		}
 	}
 
 }

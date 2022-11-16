@@ -1,6 +1,6 @@
 <?php 
 /*
- * This file is part of the GiGaFlow package.
+ * This file is part of the GiGaCMS package.
  *
  * (c) Giuseppe Galari <gigaprog@proton.me>
  *
@@ -14,6 +14,13 @@ namespace App\Controllers;
 use Src\Controller;
 use Src\Http\Redirect;
 
+/**
+ * 
+ * @package GiGaCMS\Controllers
+ * @author Giuseppe Galari <gigaprog@proton.me>
+ * @version 1.0.0
+ * @see Controller
+ */
 class HomeController extends Controller
 {
   public function index()

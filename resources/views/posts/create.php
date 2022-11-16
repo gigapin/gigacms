@@ -1,24 +1,6 @@
 <?php include '../resources/views/templates/base.php' ?>
 
-<div class="modal fade" id="modal-leave-page">
-  <div class="modal-dialog">
-    <div class="modal-content bg-info">
-      <div class="modal-header">
-        <h4 class="modal-title">Leave page</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want leave this page?</p>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
-        <a href="/posts" class="btn btn-outline-dark">Leave page</a>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<?php include '../resources/views/partials/leave_page.php'; ?>
 
 <form action="/posts" method="POST" enctype="multipart/form-data">
   <input type="hidden" name="_token" value="<?= isset($token) ? $token : "" ?>">
@@ -128,7 +110,6 @@
                 </div>
               </div><!-- /. tab-pane-active -->
               <?php include '../resources/views/partials/metadata.php' ?>
-              
  
             </div>
           </div><!-- /.card-body -->
@@ -219,100 +200,41 @@
             <div class="row">
               <div class="col-md-12">
                 <label>Post Access</label>
-                <div class="form-group mb-0">
-                  <div class="custom-control custom-radio">
-                    <input 
-                      class="custom-control-input" 
-                      type="radio" 
-                      name="post_access" 
-                      id="post-access-public" 
-                      value="public" <?php if (isset($old['post_access']) && $old['post_access'] === 'public') : ?> checked <?php endif; ?>
-                    >
-                    <label for="post-access-public" class="custom-control-label" style="font-weight: 400;">Public</label>
+                <?php foreach ($list_access as $access): ?>
+                  <div class="form-group mb-0">
+                    <div class="custom-control custom-radio">
+                      <input 
+                        class="custom-control-input" 
+                        type="radio" 
+                        name="post_access" 
+                        id="post-access-<?= $access->alias_type_access; ?>" 
+                        value="<?= $access->alias_type_access; ?>" <?php if (isset($old['post_access']) && $old['post_access'] === $access->alias_type_access) : ?> checked <?php endif; ?>
+                      >
+                      <label for="post-access-<?= $access->alias_type_access; ?>" class="custom-control-label" style="font-weight: 400;"><?= $access->type_access ?></label>
+                    </div>
                   </div>
-                </div>
-                <div class="form-group mb-0">
-                  <div class="custom-control custom-radio">
-                    <input 
-                      class="custom-control-input" 
-                      type="radio" 
-                      name="post_access" 
-                      id="post-access-registered" 
-                      value="public" <?php if (isset($old['post_access']) && $old['post_access'] === 'registered') : ?> checked <?php endif; ?>
-                    >
-                    <label for="post-access-registered" class="custom-control-label" style="font-weight: 400;">Registered</label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="custom-control custom-radio">
-                    <input 
-                      class="custom-control-input" 
-                      type="radio" 
-                      name="post_access" 
-                      id="post-access-admin" 
-                      value="public" <?php if (isset($old['post_access']) && $old['post_access'] === 'admin') : ?> checked <?php endif; ?>
-                    >
-                    <label for="post-access-admin" class="custom-control-label" style="font-weight: 400;">Administrator</label>
-                  </div>
-                </div>
+                <?php endforeach; ?>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12">
                 <label>Post Status</label>
+                <?php foreach ($list_status as $status): ?>
                 <div class="form-group mb-0">
                   <div class="custom-control custom-radio">
                     <input 
                       class="custom-control-input" 
                       type="radio" 
                       name="post_status" 
-                      id="post-status-publish" 
-                      value="published" 
-                      <?php if (isset($old['post_status']) && $old['post_status'] === 'published') : ?> checked <?php endif; ?>
+                      id="post-status-<?= $status->alias_type_status; ?>" 
+                      value="<?= $status->alias_type_status; ?>" 
+                      <?php if (isset($old['post_status']) && $old['post_status'] === $status->alias_type_status) : ?> checked <?php endif; ?>
                     >
-                    <label for="post-status-publish" class="custom-control-label" style="font-weight: 400;">Published</label>
+                    <label for="post-status-<?= $status->alias_type_status; ?>" class="custom-control-label" style="font-weight: 400;"><?= $status->type_status; ?></label>
                   </div>
                 </div>
-                <div class="form-group mb-0">
-                  <div class="custom-control custom-radio">
-                    <input 
-                      class="custom-control-input" 
-                      type="radio" 
-                      name="post_status" 
-                      id="post-status-draft" 
-                      value="drafted" 
-                      <?php if (isset($old['post_status']) && $old['post_status'] === 'drafted') : ?> checked <?php endif; ?>
-                    >
-                    <label for="post-status-draft" class="custom-control-label" style="font-weight: 400;">Drafted</label>
-                  </div>
-                </div>
-                <div class="form-group mb-0">
-                  <div class="custom-control custom-radio">
-                    <input 
-                      class="custom-control-input" 
-                      type="radio" 
-                      name="post_status" 
-                      id="post-status-trash" 
-                      value="trashed" 
-                      <?php if (isset($old['post_status']) && $old['post_status'] === 'trashed') : ?> checked <?php endif; ?>
-                    >
-                    <label for="post-status-trash" class="custom-control-label" style="font-weight: 400;">Trashed</label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="custom-control custom-radio">
-                    <input 
-                      class="custom-control-input" 
-                      type="radio" 
-                      name="post_status" 
-                      id="post-status-archived" 
-                      value="archived" 
-                      <?php if (isset($old['post_status']) && $old['post_status'] === 'archived') : ?> checked <?php endif; ?>
-                    >
-                    <label for="post-status-trash" class="custom-control-label" style="font-weight: 400;">Archived</label>
-                  </div>
-                </div>
+                <?php endforeach; ?>
               </div>
             </div>
 

@@ -3,7 +3,7 @@
     <div class="col-md-12 mb-2">
       <div class="form-group">
         <label>Meta Description</label>
-        <textarea class="form-control" name="meta_description">
+        <textarea class="form-control" name="meta_description" rows="3">
           <?php if (isset($metadata->meta_description)): ?>
             <?= $metadata->meta_description ?>
           <?php endif; ?>
@@ -57,7 +57,11 @@
     <div class="col-md-12 mb-2">
       <div class="form-group">
         <label>Author</label>
-        <input type="text" class="form-control" name="author" value="<?php echo $metadata->author !== null ? $metadata->author : '' ?>">
+        <input type="text" class="form-control" name="author" value=" 
+        <?php if (isset($metadata->author)): ?>
+          <?= $metadata->author ?>
+        <?php endif; ?>
+        ">
       </div>
     </div>
   </div>

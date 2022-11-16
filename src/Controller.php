@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Src;
 
+use App\Models\Access;
+use App\Models\Status;
 use Exception;
 use Src\Http\Request;
 
@@ -64,9 +66,9 @@ abstract class Controller
    * Get data from a POST request.
    *
    * @param string $value
-   * @return string
+   * @return string|null
    */
-  public function post(string $value): string
+  public function post(string $value): ?string
   {
     return Request::post($value);
   }
@@ -75,9 +77,9 @@ abstract class Controller
    * Get data from a GET request.
    *
    * @param string $value
-   * @return string
+   * @return string|null
    */
-  public function get(string $value): string
+  public function get(string $value): ?string
   {
     return Request::get($value);
   }
@@ -86,10 +88,30 @@ abstract class Controller
    * Get the file data from a file uploaded.
    *
    * @param string $value
-   * @return array
+   * @return array|null
    */
-  public function file(string $value): array
+  public function file(string $value): ?array
   {
     return Request::file($value);
+  }
+
+  /**
+   * Create an instance of Status class.
+   *
+   * @return mixed
+   */
+  public function status(): mixed
+  {
+    return new Status('status');
+  }
+
+  /**
+   * Create an instance of Access class.
+   *
+   * @return mixed
+   */
+  public function access(): mixed
+  {
+    return new Access('access');
   }
 }

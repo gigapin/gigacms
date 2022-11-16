@@ -87,6 +87,8 @@ class Router implements RouterInterface
     if ($this->request->method() === 'get') {
       return $this->map($path, $params);
     }
+
+    return null;
   }
 
   /**
@@ -101,6 +103,8 @@ class Router implements RouterInterface
     if ($this->request->method() === 'post') {
       return $this->map($path, $params);
     }
+
+    return null;
   }
 
   /**
@@ -115,6 +119,8 @@ class Router implements RouterInterface
     if ($this->request->method() === 'put') {
       $this->map($path, $params);
     }
+
+    return null;
   }
 
   /**
@@ -129,6 +135,8 @@ class Router implements RouterInterface
     if ($this->request->method() === 'patch') {
       $this->map($path, $params);
     }
+
+    return null;
   }
 
   /**
@@ -143,6 +151,8 @@ class Router implements RouterInterface
     if ($this->request->method() === 'delete') {
       $this->map($path, $params);
     }
+    
+    return null;
   }
 
   /**
@@ -160,7 +170,7 @@ class Router implements RouterInterface
       if (preg_match($route, $url, $matches)) {
         if (in_array($this->request->uri(), $matches)) {
           $controller = $this->routes[$route][0][0];
-
+          
           if (isset($matches[0])) {
             $action = $param[0][1];
           } else {
@@ -169,7 +179,7 @@ class Router implements RouterInterface
           if (isset($matches[1])) {
             $paramValue = $matches[1];
           }
-
+          
           return $this->dispatch($controller, $action, $paramValue);
         }
       }

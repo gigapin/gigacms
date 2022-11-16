@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Src\Validation;
 
+use Src\Http\Request;
+use Src\Http\Redirect;
 use Src\Session\Session;
 
 /**
@@ -20,7 +22,7 @@ use Src\Session\Session;
  * @author Giuseppe Galari <gigaprog@proton.me>
  * @version 1.0.0
  */
-trait ValidateRequest
+class ValidateRequest
 {
   /** 
    * Storing errors.
@@ -131,7 +133,7 @@ trait ValidateRequest
    * @static
    * @return void
    */
-  public function number(string $input, string $value): void
+  public static function number(string $input, string $value): void
   {
     if (preg_match("/^([a-z]+)$/i", $value)) {
       self::$errors[$input] = "Allowed only number characters";
@@ -168,6 +170,45 @@ trait ValidateRequest
         unset($_SESSION['errors']);
       }
       return Session::set('errors', self::$errors);
+    }
+
+    return null;
+  }
+
+   /**
+   * Sessions about validation data.
+   * 
+   * @access private
+   * @static
+   */
+  public static function storingSession(array $errors)
+  {
+    if (Request::validate($errors) !== null) {
+      Session::remove('data-form');
+      Session::set('data-form', Request::all());
+      return Redirect::to('posts/create');
+    } elseif (Session::has('data-form')) {
+        Session::remove('data-form');
+        Session::remove('errors');
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Update sessions for validation data.
+   *
+   * @param object $updatePost
+   * @static
+   */
+  public static function updateSession(object $updatePost, array $errors)
+  {
+    if (Request::validate($errors) !== null) {
+      return redirect('posts/edit/' . $updatePost->post_name);
+    } elseif (Session::has('errors')) {
+      Session::remove('errors');
+    } else {
+      return null;
     }
   }
 }

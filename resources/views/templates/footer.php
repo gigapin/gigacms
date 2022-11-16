@@ -53,9 +53,6 @@
     <script src="/adminlte/dist/js/adminlte.js"></script>
     <!-- TinyMCE -->
     <script src="/assets/tinymce/tinymce/js/tinymce/tinymce.min.js"></script>
-    <!-- Tagify --> 
-    <script src="/assets/tagify/dist/jQuery.tagify.min.js"></script>
-    <script src="/assets/tagify/dist/tagify.polyfills.min.js"></script>
     <!-- GiGaCMS JavaScript Script -->
     <script src="/assets/js/scripts.js"></script>
 

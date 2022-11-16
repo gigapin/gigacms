@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace Src;
 
 use Exception;
+use Src\Http\Redirect;
+use Src\Session\Session;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -37,11 +39,19 @@ class View
   {
     extract($data, EXTR_SKIP);
     $realPath = realpath(__DIR__ . "/../resources/views/" . $path . ".php");
-    if (file_exists($realPath) && is_readable($realPath)) {
-      return require __DIR__ . "/../resources/views/$path.php";
-    } else {
-      throw new Exception("$realPath not found");
-    }
+    try {
+      if (file_exists($realPath) && is_readable($realPath)) {
+        if (Session::has('user')) {
+          return require __DIR__ . "/../resources/views/$path.php";
+        } else {
+          return require __DIR__ . "/../resources/views/auth/login.php";
+        }
+      } else {
+        throw new Exception("$realPath not found");
+      }
+    } catch (Exception $exc) {
+      printf("%s", $exc->getMessage());
+    } 
   }
 
   /**
@@ -115,7 +125,7 @@ class View
    * @static
    * @return void
    */
-  public static function showErrorException(string $exception): void
+  public static function showErrorException($exception): void
   {
     self::render('errors/errorException', compact('exception'));
   }

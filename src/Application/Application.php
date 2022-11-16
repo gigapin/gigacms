@@ -14,6 +14,7 @@ namespace Src\Application;
 use Exception;
 use Src\Router\Router;
 use Src\Router\RouterFactory;
+use Src\Session\Session;
 use Src\Session\SessionFactory;
 
 /**
@@ -75,6 +76,5 @@ class Application
     {
         return RouterFactory::build();
     }
-
 
 }

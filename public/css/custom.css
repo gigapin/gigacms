@@ -24,12 +24,13 @@ img:focus {
 
 .post-footer {
 	display: flex;
-  	justify-content: space-between;
+  justify-content: space-between;
 }
 
 .post-footer > div {
 	text-align: center;
 	color: gray;
+	font-size: smaller;
 }
 
 .link-card-title {
@@ -55,6 +56,11 @@ img:focus {
 .card-body-collapsed {
 	max-height: 450px;
 	overflow: auto;
+}
+
+.card-title {
+	font-size: large;
+	font-weight: 600;
 }
 
 .media-thumbnail {
@@ -92,4 +98,9 @@ img:focus {
 	float: right;
 	margin-right: .5rem;
 	cursor: pointer;
+}
+
+.flex-wrapper {
+	display: flex;
+	justify-content: space-between;
 }
