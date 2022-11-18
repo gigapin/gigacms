@@ -192,9 +192,10 @@ class Request
    * @param $input string Name input field
    * @param $value string Value of the input field
    * @param string $rule string Rule
+   * @static
    * @return void
    */
-  public function callRule(array $data, string $method, string $input, string|null $value, mixed $rule): void
+  public static function callRule(array $data, string $method, string $input, string|null $value, mixed $rule): void
   {
     $obj = "Src\Validation\ValidateRequest";
 

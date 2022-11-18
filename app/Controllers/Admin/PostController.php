@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 declare(strict_types=1);
 
 namespace App\Controllers\Admin;
@@ -25,6 +26,7 @@ use App\Models\Category;
 use Src\Session\Session;
 use App\Actions\MediaAction;
 use App\Actions\MetaDataAction;
+use App\Actions\RevisionAction;
 use App\Actions\CategoryPostAction;
 use Src\Validation\ValidateRequest;
 
@@ -38,7 +40,7 @@ use Src\Validation\ValidateRequest;
 class PostController extends Controller
 {
   /** @var object */
-  private object $post, $category, $categoryPost, $media, $comment, $metadata, $access, $status;
+  private object $post, $category, $categoryPost, $media, $comment, $metadata, $access, $status, $revision;
 
   /**
    * Constructor
@@ -53,6 +55,7 @@ class PostController extends Controller
     $this->metadata = new MetaDataAction();
     $this->access = new Access('access');
     $this->status = new Status('status');
+    $this->revision = new RevisionAction();
   }
 
   /**
@@ -63,7 +66,7 @@ class PostController extends Controller
   public function index(): mixed
   {
     $posts = $this->post->findAllWhere('user_id', Auth::id());
-    if (! Session::has('user')) {
+    if (!Session::has('user')) {
       return redirect('login');
     }
 
@@ -122,7 +125,7 @@ class PostController extends Controller
     return $errors;
   }
 
- 
+
 
   /**
    * Store a newly created resource in storage.
@@ -131,7 +134,7 @@ class PostController extends Controller
    */
   public function store(): mixed
   {
-    
+
     ValidateRequest::storingSession($this->validateRule());
 
     $this->post->insert($this->getDataFromForm());
@@ -168,7 +171,7 @@ class PostController extends Controller
     }
 
     try {
-      if (! $post) {
+      if (!$post) {
         return throw new \Exception('Post not found');
       }
     } catch (\Exception $exc) {
@@ -195,7 +198,7 @@ class PostController extends Controller
     $post = $this->post->findWhereAnd('post_name', $slug, 'user_id', Auth::id());
 
     try {
-      if (! $post) {
+      if (!$post) {
         throw new Exception('Post not found');
       }
 
@@ -228,14 +231,34 @@ class PostController extends Controller
     $postId = $this->post->findById($id);
 
     $this->media->updateFile($postId->id);
-
     $this->categoryPost->updateCategoryPost($postId);
-
     $this->metadata->updateMetaData($postId);
-  
+    $this->revision->store($this->getDataFromForm(), $id);
     Session::setFlashMessage('FLASH_SUCCESS', 'Post updated successfully');
 
     Redirect::to('posts/edit/' . $postId->post_name);
+  }
+
+  /**
+   * Restore old version of a specified post.
+   *
+   * @param integer $id
+   * @return mixed
+   */
+  public function restore(int $id): mixed
+  {
+    $get_revision = $this->revision->getRevision($id);
+   
+    $this->post->update($get_revision->post_id, [
+      'post_title' => $get_revision->post_title,
+      'post_content' => $get_revision->post_content,
+      'post_name' => $get_revision->post_name,
+      'guid' => $get_revision->guid,
+      'current_revision' => $get_revision->id,
+      'updated_at' => setDate(),
+    ]);
+
+    return redirect('posts/edit/' . $get_revision->post_name);
   }
 
   /**
@@ -249,7 +272,7 @@ class PostController extends Controller
   {
     $post = $this->post->findById($id);
     try {
-      if (! $post) {
+      if (!$post) {
         throw new \Exception('Post not found');
       }
 

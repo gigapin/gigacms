@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the GiGaCMS package.
+ * This file is part of the GiGaFlow package.
  *
  * (c) Giuseppe Galari <gigaprog@proton.me>
  *
@@ -13,7 +13,7 @@ namespace Src\Application;
 
 /**
  * 
- * @package GiGaCMS\Config
+ * @package GiGaFlow\Config
  * @author Giuseppe Galari <gigaprog@proton.me>
  * @version 1.0.0
  */

@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the GiGaCMS package.
+ * This file is part of the GiGaFlow package.
  *
  * (c) Giuseppe Galari <gigaprog@proton.me>
  *
@@ -17,7 +17,7 @@ use \Exception;
 use \PDO;
 
 /**
- * @package GiGaCMS\Database
+ * @package GiGaFlow\Database
  * @author Giuseppe Galari <gigaprog@proton.me>
  * @version 1.0.0
  * @see DatabaseConnectionInterface

@@ -60,7 +60,8 @@
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item">
-							<a href="/posts" class="btn btn-app bg-secondary"><i class="fas fa-th-list"></i> Posts</a>
+							<a href="/posts" class="btn btn-app bg-secondary"><i class="fas fa-th-list"></i>Posts</a>
+							<a href="/revisions/<?= $post->id; ?>" class="btn btn-app bg-info"><i class="fas fa-history"></i>Revision</a>
 							<button type="button" class="btn btn-app bg-danger" data-toggle="modal" data-target="#modal-danger"><i class="fas fa-trash"></i>Delete</button>
 							<button type="submit" class="btn btn-app bg-success"><i class="fas fa-save"></i>Update</button>
 						</li>

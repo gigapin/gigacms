@@ -94,6 +94,33 @@ class QueryBuilder extends Model
 	 * @param int $fetchType
 	 * @return mixed
 	 */
+	public function findLastOne(
+		string $field, 
+		string|int $value,
+		int $fetchType = \PDO::FETCH_OBJ
+	): mixed
+	{
+		$sql = "SELECT * FROM $this->table WHERE $field = :$field ORDER BY id DESC";
+		$stmt = Model::getDB()->prepare($sql);
+		$stmt->bindValue(":$field", $value);
+		
+		if (! $stmt->execute()) {
+			throw new \Exception(sprintf(
+				"Error PDO exec: %s", implode(", ", Model::getDB()->errorInfo())
+			));
+		}
+		
+		return $stmt->fetch($fetchType);
+	}
+
+	/**
+	 * Find record with one condition true.
+	 *
+	 * @param string $field
+	 * @param string $value
+	 * @param int $fetchType
+	 * @return mixed
+	 */
 	public function findWhere(
 		string $field, 
 		string|int $value,

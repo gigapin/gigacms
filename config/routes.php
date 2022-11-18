@@ -21,6 +21,7 @@ use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\LibraryController;
 use App\Controllers\Admin\MenuController;
 use App\Controllers\Admin\MenuItemController;
+use App\Controllers\Admin\RevisionController;
 use App\Controllers\Admin\TagController;
 use App\Controllers\Backend\SettingController;
 
@@ -49,6 +50,7 @@ $route->get('/posts/edit/{id}', [PostController::class, 'edit']);
 $route->post('/posts/{id}', [PostController::class, 'update']);
 $route->post('/posts/delete/{id}', [PostController::class, 'delete']);
 $route->get('/posts/{slug}', [PostController::class, 'show']);
+$route->post('/posts/restore/{id}', [PostController::class, 'restore']);
 
 /** MENUS */
 $route->get('/menus', [MenuController::class, 'index']);
@@ -84,4 +86,10 @@ $route->post('/tags/delete/{slug}', [TagController::class, 'delete']);
 
 /** TEST PHP */
 $route->get('/tests', [TestsController::class, 'index']);
+
+/** REVISIONS */
+$route->get('/revisions/{id}', [RevisionController::class, 'index']);
+$route->get('/revisions/preview/{id}', [RevisionController::class, 'preview']);
+$route->post('/revisions/restore/{id}', [RevisionController::class, 'restore']);
+$route->post('/revisions/delete/{id}', [RevisionController::class, 'delete']);
 

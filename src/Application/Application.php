@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the GiGaCMS package.
+ * This file is part of the GiGaFlow package.
  *
  * (c) Giuseppe Galari <gigaprog@proton.me>
  *
@@ -19,7 +19,7 @@ use Src\Session\SessionFactory;
 
 /**
  * 
- * @package GiGaCMS\Application
+ * @package GiGaFlow\Application
  * @author Giuseppe Galari <gigaprog@proton.me>
  * @version 1.0.0
  * @see Controller
