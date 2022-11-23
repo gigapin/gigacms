@@ -104,3 +104,7 @@ img:focus {
 	display: flex;
 	justify-content: space-between;
 }
+
+.flex-wrapper > div > p {
+	font-size: smaller;
+}

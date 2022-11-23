@@ -51,7 +51,7 @@
 <form action="/posts/<?= $post->id ?>" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="_token" value="<?= isset($token) ? $token : "" ?>">
 	<!-- Content Header (Page header) -->
-	<section class="content-header">
+	<section class="content-header">	
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">

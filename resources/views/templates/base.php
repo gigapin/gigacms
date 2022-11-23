@@ -49,7 +49,7 @@
           <a href="index3.html" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contact</a>
+          
         </li>
       </ul>
     </nav>
@@ -133,10 +133,22 @@
               </a>
             </li>
             <li class="nav-item menu-open">
-              <a href="/posts" class="nav-link">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
                 <p>Users<i class="right fas fa-angle-left"></i></p>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/user-permissions" class="nav-link">
+                    <p>User Permissions</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/users" class="nav-link">
+                    <p>All Users </p>
+                  </a>
+                </li>
+              </ul>
             </li>
             <li class="nav-item menu-open">
               <a href="/logout" class="nav-link">

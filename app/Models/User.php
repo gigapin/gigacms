@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Src\Model;
 use Src\QueryBuilder;
 
 /** 
@@ -21,5 +22,66 @@ use Src\QueryBuilder;
  */
 class User extends QueryBuilder
 {
-	
+  	/**
+	 * Maximum length of characters allowed for username field.
+	 *   
+	 * @access public
+	 * @var integer
+	 */
+	public int $max_username = 20;
+
+	/**
+	 * Minimum length of characters allowed for username field.
+	 *   
+	 * @access public
+	 * @var integer
+	 */
+	public int $min_username = 3;
+
+	/**
+	 * Maximum length of characters allowed for name field.
+	 *   
+	 * @access public
+	 * @var integer
+	 */
+	public int $max_name = 50;
+
+	/**
+	 * Minimum length of characters allowed for name field.
+	 *   
+	 * @access public
+	 * @var integer
+	 */
+	public int $min_name = 3;
+
+	/**
+	 * Maximum length of characters allowed for password field.
+	 *   
+	 * @access public
+	 * @var integer
+	 */
+	public int $max_password = 16;
+
+	/**
+	 * Minimum length of characters allowed for password field.
+	 *   
+	 * @access public
+	 * @var integer
+	 */
+	public int $min_password = 8;
+
+  /**
+   * Get role name from users table. 
+   * 
+   * @return mixed
+   */
+	public function role(): mixed
+  {
+    $sql = "SELECT name_role FROM
+      users INNER JOIN roles
+      ON users.role = roles.alias_name_role";
+    $stmt = Model::getDB()->query($sql);
+
+    return $stmt->fetch(\PDO::FETCH_OBJ);
+  }
 }

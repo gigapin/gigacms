@@ -38,7 +38,7 @@ class Session implements SessionInterface
       $_SESSION[$name] = $value;
       return $_SESSION[$name];
     }
-
+    
     return null;
   }
 

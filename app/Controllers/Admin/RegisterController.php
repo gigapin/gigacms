@@ -26,58 +26,10 @@ use Src\Http\Redirect;
 class RegisterController extends Controller
 {
 	/**
-	 * @access private
+	 * @access protected
 	 * @var object
 	 */
-	private object $user;
-
-	/**
-	 * Maximum length of characters allowed for username field.
-	 *   
-	 * @access protected
-	 * @var integer
-	 */
-	protected int $max_username = 20;
-
-	/**
-	 * Minimum length of characters allowed for username field.
-	 *   
-	 * @access protected
-	 * @var integer
-	 */
-	protected int $min_username = 3;
-
-	/**
-	 * Maximum length of characters allowed for name field.
-	 *   
-	 * @access protected
-	 * @var integer
-	 */
-	protected int $max_name = 50;
-
-	/**
-	 * Minimum length of characters allowed for name field.
-	 *   
-	 * @access protected
-	 * @var integer
-	 */
-	protected int $min_name = 3;
-
-	/**
-	 * Maximum length of characters allowed for password field.
-	 *   
-	 * @access protected
-	 * @var integer
-	 */
-	protected int $max_password = 16;
-
-	/**
-	 * Minimum length of characters allowed for password field.
-	 *   
-	 * @access protected
-	 * @var integer
-	 */
-	protected int $min_password = 8;
+	protected object $user;
 
 	/**
 	 * Constructor
@@ -108,17 +60,17 @@ class RegisterController extends Controller
 	{
 		$errors = $this->request()->validate([
 			'username' => [
-				'max' => $this->max_username,
-				'min' => $this->min_username
+				'max' => $this->user->max_username,
+				'min' => $this->user->min_username
 			],
 			'name' => [
-				'max' => $this->max_name,
-				'min' => $this->min_name
+				'max' => $this->user->max_name,
+				'min' => $this->user->min_name
 			],
 			'email' => ['email'],
 			'password' => [
-				'max' => $this->max_password,
-				'min' => $this->min_password
+				'max' => $this->user->max_password,
+				'min' => $this->user->min_password
 			]
 		]);
 		if ($this->post('password') !== $this->post('password-confirm')) {

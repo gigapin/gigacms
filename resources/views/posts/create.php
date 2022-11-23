@@ -134,9 +134,9 @@
                           <option value="<?= $category->id ?>" selected><?= $category->category_name ?></option>
                         <?php endif; ?>
                         <option value="<?= $category->id ?>"><?= $category->category_name ?></option>
-                      <?php endforeach ?>
+                      <?php endforeach ?>  
                     <?php else : ?>
-                      <option value="null" selected>Open this select menu</option>
+                      <option value="1" selected>Open this select menu</option>
                       <?php foreach ($categories as $category) : ?>
                         <option value="<?= $category->id ?>"><?= $category->category_name ?></option>
                       <?php endforeach ?>
@@ -208,7 +208,13 @@
                         type="radio" 
                         name="post_access" 
                         id="post-access-<?= $access->alias_type_access; ?>" 
-                        value="<?= $access->alias_type_access; ?>" <?php if (isset($old['post_access']) && $old['post_access'] === $access->alias_type_access) : ?> checked <?php endif; ?>
+                        value="<?= $access->alias_type_access; ?>" 
+                        <?php if (isset($old['post_access']) && $old['post_access'] === $access->alias_type_access) : ?> checked
+                        <?php else: ?> 
+                          <?php if ($access->default_access === 1): ?>
+                            checked  
+                          <?php endif; ?>
+                        <?php endif; ?>
                       >
                       <label for="post-access-<?= $access->alias_type_access; ?>" class="custom-control-label" style="font-weight: 400;"><?= $access->type_access ?></label>
                     </div>
@@ -229,7 +235,12 @@
                       name="post_status" 
                       id="post-status-<?= $status->alias_type_status; ?>" 
                       value="<?= $status->alias_type_status; ?>" 
-                      <?php if (isset($old['post_status']) && $old['post_status'] === $status->alias_type_status) : ?> checked <?php endif; ?>
+                      <?php if (isset($old['post_status']) && $old['post_status'] === $status->alias_type_status) : ?> checked 
+                      <?php else: ?> 
+                        <?php if ($status->default_status === 1): ?>
+                        checked  
+                        <?php endif; ?>
+                      <?php endif; ?>
                     >
                     <label for="post-status-<?= $status->alias_type_status; ?>" class="custom-control-label" style="font-weight: 400;"><?= $status->type_status; ?></label>
                   </div>
@@ -269,15 +280,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Tags</label>
-                                    <input type="text" name="tags" id="tags" class="form-control" placeholder="Enter some tags">
-                                </div>
-                            </div>
-                        </div> -->
 
             <div class="row mt-3">
               <div class="col-md-12">

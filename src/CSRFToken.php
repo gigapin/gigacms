@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Src;
 
-use Exception;
 use Src\Session\Session;
 
 /**
@@ -45,7 +44,7 @@ class CSRFToken
    */
   public static function verifyToken(): void
   {
-    if (!isset($_SESSION['_token']) || $_SESSION['_token'] !== self::token()) {
+    if (! isset($_SESSION['_token']) || $_SESSION['_token'] !== self::token() || is_null($_SESSION['_token'])) {
       header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
       printf('%s', '<h1>403 Forbidden</h1>');
       exit();

@@ -141,6 +141,33 @@ class QueryBuilder extends Model
 	}
 
 	/**
+	 * Find record with one condition false.
+	 *
+	 * @param string $field
+	 * @param string $value
+	 * @param int $fetchType
+	 * @return mixed
+	 */
+	public function findAllWhereNot(
+		string $field, 
+		string|int $value,
+		int $fetchType = \PDO::FETCH_OBJ
+	): mixed
+	{
+		$sql = "SELECT * FROM $this->table WHERE $field != :$field";
+		$stmt = Model::getDB()->prepare($sql);
+		$stmt->bindValue(":$field", $value);
+		
+		if (! $stmt->execute()) {
+			throw new \Exception(sprintf(
+				"Error PDO exec: %s", implode(", ", Model::getDB()->errorInfo())
+			));
+		}
+		
+		return $stmt->fetchAll($fetchType);
+	}
+
+	/**
 	 * Find record with one condition true.
 	 *
 	 * @param string $field

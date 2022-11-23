@@ -214,9 +214,8 @@ class Request
   public static function validate(array $data): mixed
   {
     $input = array();
-
+    
     foreach ($data as $k => $v) {
-
       if (array_key_exists($k, $data)) {
         $value = self::post($k);
         $array[$k] = $v;
@@ -227,7 +226,7 @@ class Request
         throw new \Exception('Input field not exists');
       }
     }
-
+    
     foreach ($input as $k => $v) {
       for ($x = 0; $x < count($v['method']); $x++) {
         if ($v['method'][$x] === 0) {

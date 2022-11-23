@@ -84,7 +84,7 @@ class PostController extends Controller
    * @return mixed
    */
   public function create(): mixed
-  {
+  { 
     return view('posts/create', [
       'token' => CSRFToken::token(),
       'categories' => $this->category->findAll(),
@@ -103,26 +103,21 @@ class PostController extends Controller
    */
   private function validateRule(): mixed
   {
-    $errors = [
+    return [
       'post_title' => [
         'required' => true,
+        'title',
         'max' => 50,
-        'title'
+        'unique' => [true, new Post('posts')]
       ],
       'post_content' => [
         'required' => true
       ],
       'post_date' => [
         'now'
-      ],
-      'post_status' => [
-        'required' => true
-      ],
-      'comment_status' => [
-        'required' => true
       ]
     ];
-    return $errors;
+    
   }
 
 
@@ -134,8 +129,10 @@ class PostController extends Controller
    */
   public function store(): mixed
   {
-
-    ValidateRequest::storingSession($this->validateRule());
+    if (! is_null(Request::validate($this->validateRule()))) {
+      return ValidateRequest::storingSession($this->validateRule(), 'posts/create');
+    } 
+    ValidateRequest::unsetSession();
 
     $this->post->insert($this->getDataFromForm());
 
@@ -198,7 +195,7 @@ class PostController extends Controller
     $post = $this->post->findWhereAnd('post_name', $slug, 'user_id', Auth::id());
 
     try {
-      if (!$post) {
+      if (! $post) {
         throw new Exception('Post not found');
       }
 
@@ -224,10 +221,13 @@ class PostController extends Controller
    */
   public function update(int $id): mixed
   {
-    $updatePost = $this->post->findById($id);
-    ValidateRequest::updateSession($updatePost, $this->validateRule());
+    $getPost = $this->post->findById($id);
+    if (! is_null(Request::validate($this->validateRule()))) {
+      return ValidateRequest::storingSession($this->validateRule(), 'posts/edit/' . $getPost->post_name);
+    }
+    ValidateRequest::unsetSession();
 
-    $this->post->update($id, $this->getDataFromForm());
+    $this->post->update($id, $this->getDataFromForm(true));
     $postId = $this->post->findById($id);
 
     $this->media->updateFile($postId->id);
@@ -291,9 +291,10 @@ class PostController extends Controller
    * @access private
    * @return array
    */
-  private function getDataFromForm(): array
+  private function getDataFromForm(bool $update = false): array
   {
     $guid = $this->request()->site() . "/" . slug($this->post('post_title'));
+
     return [
       'user_id' => Auth::id(),
       'post_date' => $this->post('post_date') !== '' ? $this->post('post_date') : null,
@@ -308,7 +309,7 @@ class PostController extends Controller
       'post_parent' => $this->post('post_parent') !== '' ? $this->post('post_parent') : null,
       'guid' => $guid,
       'deleted_at' => null,
-      'updated_at' => setDate(),
+      //'updated_at' => $update === true ? setdate() : null,
     ];
   }
 }

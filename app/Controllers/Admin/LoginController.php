@@ -82,6 +82,7 @@ class LoginController extends Controller
 				'min' => $this->min_length
 			]
 		]);
+		
 		if ($errors) {
 			return view('auth/login', ['errors' => $errors]);
 		}
@@ -92,10 +93,10 @@ class LoginController extends Controller
 			if (! $pass || ! password_verify($this->post('password'), $pass->password)) {
 				throw new Exception('Credentials entered not are valid');
 			} 
-
+			
 			Session::set('user', $pass->username);
 			Redirect::to('dashboard');
-
+			
 		} catch (\Exception $exc) {
 			printf("%s", $exc->getMessage());
 		}
