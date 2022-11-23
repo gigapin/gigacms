@@ -8,7 +8,6 @@
   },
   "require": {
     "ext-pdo": "*",
-    "twig/twig": "^3.0",
     "tinymce/tinymce": "^6.2",
     "vlucas/phpdotenv": "^5.5"
   },
