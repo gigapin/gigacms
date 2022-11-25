@@ -11,20 +11,21 @@ declare(strict_types=1);
 
 /** @var $route */
 
-use App\Controllers\Admin\CategoryController;
+use App\Controllers\Admin\RoleController;
 use App\Controllers\HomeController;
 use App\Controllers\TestsController;
-use App\Controllers\Admin\PostController;
-use App\Controllers\Admin\LoginController;
-use App\Controllers\Admin\RegisterController;
-use App\Controllers\Admin\DashboardController;
-use App\Controllers\Admin\LibraryController;
-use App\Controllers\Admin\MenuController;
-use App\Controllers\Admin\MenuItemController;
-use App\Controllers\Admin\RevisionController;
-use App\Controllers\Admin\RolePermission;
 use App\Controllers\Admin\TagController;
+use App\Controllers\Admin\MenuController;
+use App\Controllers\Admin\PostController;
+use App\Controllers\Admin\RolePermission;
 use App\Controllers\Admin\UserController;
+use App\Controllers\Admin\LoginController;
+use App\Controllers\Admin\LibraryController;
+use App\Controllers\Admin\CategoryController;
+use App\Controllers\Admin\MenuItemController;
+use App\Controllers\Admin\RegisterController;
+use App\Controllers\Admin\RevisionController;
+use App\Controllers\Admin\DashboardController;
 use App\Controllers\Backend\SettingController;
 
 /** HOME */
@@ -104,11 +105,17 @@ $route->get('/users/edit/{id}', [UserController::class, 'edit']);
 $route->post('/users/{id}', [UserController::class, 'update']);
 $route->post('/users/delete/{id}', [UserController::class, 'delete']);
 
+/** ROLES */
+$route->post('/roles', [RoleController::class, 'store']);
+$route->post('/roles/delete/{id}', [RoleController::class, 'delete']);
+
 /** ROLE PERMISSIONS */
 $route->get('/role-permissions', [RolePermission::class, 'index']);
 $route->get('/role-permissions/create', [RolePermission::class, 'create']);
 $route->post('/role-permissions', [RolePermission::class, 'store']);
-$route->get('/role-permissions/edit/{$id}', [RolePermission::class, 'edit']);
-$route->post('/role-permissions/{$id}', [RolePermission::class, 'update']);
-$route->post('/role-permissions/delete/{$id}', [RolePermission::class, 'delete']);
+$route->get('/role-permissions/edit/{id}', [RolePermission::class, 'edit']);
+$route->post('/role-permissions/{id}', [RolePermission::class, 'update']);
+$route->post('/role-permissions/change/{id}', [RolePermission::class, 'change']);
+$route->post('/role-permissions/delete/{id}', [RolePermission::class, 'delete']);
+$route->get('/role-permissions/restore', [RolePermission::class, 'restoreDefaultPermission']);
 

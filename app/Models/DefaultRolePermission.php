@@ -22,7 +22,7 @@ use Src\QueryBuilder;
  * @version 1.0.0
  * @see QueryBuilder
  */
-class RolePermission extends QueryBuilder
+class DefaultRolePermission extends QueryBuilder
 {
   /**
    * Get name of the a role in relation with role_permissions table.

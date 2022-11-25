@@ -139,8 +139,8 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="/user-permissions" class="nav-link">
-                    <p>User Permissions</p>
+                  <a href="/role-permissions" class="nav-link">
+                    <p>User Role Permissions</p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -164,4 +164,4 @@
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper kanban">

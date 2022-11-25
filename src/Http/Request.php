@@ -59,13 +59,15 @@ class Request
     } else {
       $request = null;
     }
-
+    
     if (count($data) > 0) {
       foreach ($data as $key => $value) {
         $request[$key] = $value;
       }
     }
-
+    if (array_key_exists('_token', $request)) {
+      unset($request['_token']);
+    }
     return $request;
   }
 

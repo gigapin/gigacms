@@ -165,6 +165,7 @@ class Router implements RouterInterface
   public function match(string $url): mixed
   {
     $paramValue = null;
+    
     foreach ($this->routes as $route => $param) {
       // $param get route table 1. controller 2. action
       if (preg_match($route, $url, $matches)) {

@@ -11,11 +11,13 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Src\Auth;
 use Src\CSRFToken;
 use Src\Controller;
+use Src\Http\Request;
 use App\Models\Category;
-use Src\Auth;
 use Src\Session\Session;
+use Src\Validation\ValidateRequest;
 
 /**
  * @package GiGaCMS/Category
@@ -39,21 +41,31 @@ class CategoryController extends Controller
 		$this->category = new Category('categories');
 	}
 
+	private function getData()
+	{
+		return [
+			'user_id' => Auth::id(),
+			'category_name' => $this->post('category_name'),
+			'category_slug' => slug($this->post('category_name')),
+			'category_description' => $this->post('category_description'),
+			'category_status' => $this->post('category_status'),
+			'updated_at' => setDate()
+		];
+	}
+
 	/**
 	 * Set rules for validation data.
 	 *
 	 * @return array|null
 	 */
-	private function validation(): ?array
+	private function setValidation(): ?array
 	{
-		$errors = $this->request()->validate([
+		return [
 			'category_name' => [
 				'required' => true,
 				'max' => 30,
 			]
-		]);
-
-		return $errors;
+		];
 	}
 
 	/**
@@ -89,24 +101,12 @@ class CategoryController extends Controller
 	 */
 	public function store(): mixed
 	{
-		if ($this->validation()) {
-			Session::remove('data-form');
-      Session::set('data-form', $this->request()->all());
-			return redirect('categories/create');
-		} else {
-			Session::remove('data-form');
-      Session::remove('errors');
+		if (! is_null(Request::validate($this->setValidation()))) {
+			return ValidateRequest::storingSession($this->setValidation(), 'categories/create');
 		}
+		ValidateRequest::unsetSession();
 
-		$this->category->insert([
-			'user_id' => Auth::id(),
-			'category_name' => $this->post('category_name'),
-			'category_slug' => slug($this->post('category_name')),
-			'category_description' => $this->post('category_description') !== '' ? $this->post('category_description') : null,
-			'category_status' => $this->post('category_status'),
-			'created_at' => setDate(),
-			'updated_at' => setDate()
-		]);
+		$this->category->insert($this->getData());
 
 		Session::setFlashMessage('FLASH_SUCCESS', 'Category created successfully');
 
@@ -122,7 +122,6 @@ class CategoryController extends Controller
 	 */
 	public function edit(string $slug): mixed
 	{
-		
 		$categoryId = $this->category->findWhere('category_slug', $slug);
 		
 		try {
@@ -131,7 +130,7 @@ class CategoryController extends Controller
 			}
 
 			return view('categories/edit', [
-				'category' => $this->category->findWhereAnd('category_name', $slug, 'user_id', Auth::id()),
+				'category' => $this->category->findWhereAnd('category_slug', $slug, 'user_id', Auth::id()),
 				'token' => CSRFToken::token(),
 				'categories' => $this->category->findAll(),
 				
@@ -150,28 +149,16 @@ class CategoryController extends Controller
 	public function update(int $id): mixed
 	{
 		$updatedId = $this->category->findById($id);
-		
-		if ($this->validation()) {
-			Session::remove('data-form');
-      Session::set('data-form', $this->request()->all());
-			return redirect("categories/edit/$updatedId->category_slug");
-		} else {
-			Session::remove('data-form');
-      Session::remove('errors');
+		if (! is_null(Request::validate($this->setValidation()))) {
+			return ValidateRequest::storingSession($this->setValidation(), 'categories/edit/' . $updatedId->category_slug);
 		}
-
-		$data = [
-			'category_name' => $this->post('category_name'),
-			'category_slug' => slug($this->post('category_name')),
-			'category_description' => $this->post('category_description'),
-			'category_status' => $this->post('category_status'),
-			'updated_at' => setDate()
-		];
-
-		$this->category->update($id, $data);
+		ValidateRequest::unsetSession();
+		
+		$this->category->update($id, $this->getData());
+		$updatedCategory = $this->category->findById($id);
 		Session::setFlashMessage('FLASH_SUCCESS', 'Category updated successfully');
 
-		return redirect('categories');
+		return redirect('categories/edit/' . $updatedCategory->category_slug);
 	}
 
 	/**
