@@ -108,3 +108,8 @@ img:focus {
 .flex-wrapper > div > p {
 	font-size: smaller;
 }
+
+label:not(.form-check-label):not(.custom-file-label) {
+	font-weight: 400;
+}
+

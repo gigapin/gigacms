@@ -26,7 +26,7 @@ use App\Controllers\Admin\MenuItemController;
 use App\Controllers\Admin\RegisterController;
 use App\Controllers\Admin\RevisionController;
 use App\Controllers\Admin\DashboardController;
-use App\Controllers\Backend\SettingController;
+use App\Controllers\Admin\SettingController;
 
 /** HOME */
 $route->get('/', [HomeController::class, 'index']);
@@ -110,12 +110,12 @@ $route->post('/roles', [RoleController::class, 'store']);
 $route->post('/roles/delete/{id}', [RoleController::class, 'delete']);
 
 /** ROLE PERMISSIONS */
-$route->get('/role-permissions', [RolePermission::class, 'index']);
-$route->get('/role-permissions/create', [RolePermission::class, 'create']);
-$route->post('/role-permissions', [RolePermission::class, 'store']);
-$route->get('/role-permissions/edit/{id}', [RolePermission::class, 'edit']);
-$route->post('/role-permissions/{id}', [RolePermission::class, 'update']);
-$route->post('/role-permissions/change/{id}', [RolePermission::class, 'change']);
-$route->post('/role-permissions/delete/{id}', [RolePermission::class, 'delete']);
-$route->get('/role-permissions/restore', [RolePermission::class, 'restoreDefaultPermission']);
+// $route->get('/role-permissions', [RolePermission::class, 'index']);
+// $route->get('/role-permissions/create', [RolePermission::class, 'create']);
+// $route->post('/role-permissions', [RolePermission::class, 'store']);
+// $route->get('/role-permissions/edit/{id}', [RolePermission::class, 'edit']);
+// $route->post('/role-permissions/{id}', [RolePermission::class, 'update']);
+// $route->post('/role-permissions/change/{id}', [RolePermission::class, 'change']);
+// $route->post('/role-permissions/delete/{id}', [RolePermission::class, 'delete']);
+// $route->get('/role-permissions/restore', [RolePermission::class, 'restoreDefaultPermission']);
 

@@ -45,10 +45,10 @@ class MetaDataAction
   public function insertMetaData(object $postId): void
   {
     $this->metadata->insert([
-      'meta_description' => Request::post('meta_description') !== "" ? Request::post('meta_description') : null,
-      'keywords' => Request::post('keywords') !== '' ? Request::post('keywords') : null,
+      'meta_description' => Request::post('meta_description') !== "" ? trim(Request::post('meta_description')) : null,
+      'keywords' => Request::post('keywords') !== '' ? trim(Request::post('keywords')) : null,
       'robots' => Request::post('robots') !== '' ? Request::post('robots') : null,
-      'author' => Request::post('author') !== '' ? Request::post('author') : null,
+      'author' => Request::post('author') !== '' ? trim(Request::post('author')) : null,
       'post_id' => $postId->id, 
     ]);
   }
@@ -63,18 +63,18 @@ class MetaDataAction
   {
     if ($this->metadata->findWhere('post_id', $postId->id)) {
       $this->metadata->updateWhere('post_id', $postId->id, [
-        'meta_description' => Request::post('meta_description') !== "" ? Request::post('meta_description') : null,
-        'keywords' => Request::post('keywords') !== '' ? Request::post('keywords') : null,
+        'meta_description' => Request::post('meta_description') !== "" ? trim(Request::post('meta_description')) : null,
+        'keywords' => Request::post('keywords') !== '' ? trim(Request::post('keywords')) : null,
         'robots' => Request::post('robots') !== '' ? Request::post('robots') : null,
-        'author' => Request::post('author') !== '' ? Request::post('author') : null,
+        'author' => Request::post('author') !== '' ? trim(Request::post('author')) : null,
         'post_id' => $postId->id, 
       ]);
     } else {
       $this->metadata->insert([
-        'meta_description' => Request::post('meta_description') !== "" ? Request::post('meta_description') : null,
-        'keywords' => Request::post('keywords') !== '' ? Request::post('keywords') : null,
+        'meta_description' => Request::post('meta_description') !== "" ? trim(Request::post('meta_description')) : null,
+        'keywords' => Request::post('keywords') !== '' ? trim(Request::post('keywords')) : null,
         'robots' => Request::post('robots') !== '' ? Request::post('robots') : null,
-        'author' => Request::post('author') !== '' ? Request::post('author') : null,
+        'author' => Request::post('author') !== '' ? trim(Request::post('author')) : null,
         'post_id' => $postId->id, 
       ]);
     }

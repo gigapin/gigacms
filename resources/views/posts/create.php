@@ -1,5 +1,8 @@
 <?php include '../resources/views/templates/base.php' ?>
 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
 <?php include '../resources/views/partials/leave_page.php'; ?>
 
 <form action="/posts" method="POST" enctype="multipart/form-data">
@@ -98,16 +101,6 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col-md-12 mb-2">
-                    <div class="form-group">
-                      <label>Excerpt</label>
-                      <textarea class="form-control" name="post_excerpt" placeholder="Enter ...">
-                        <?= isset($old['post_excerpt']) ? $old['post_excerpt'] : null; ?>
-                      </textarea>
-                    </div>
-                  </div>
-                </div>
               </div><!-- /. tab-pane-active -->
               <?php include '../resources/views/partials/metadata.php' ?>
  
@@ -261,6 +254,7 @@
                       id="comment-statut-open" 
                       value="open" 
                       <?php if (isset($old['comment_status']) && $old['comment_status'] === 'open') : ?> checked <?php endif; ?>
+                      checked
                     >
                     <label for="comment-statut-open" class="custom-control-label" style="font-weight: 400;">Open</label>
                   </div>
@@ -300,5 +294,7 @@
     </div><!-- ./row -->
   </section><!-- /.content -->
 </form>
+
+</div>
 
 <?php include '../resources/views/templates/footer.php' ?>

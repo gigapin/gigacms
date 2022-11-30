@@ -34,13 +34,13 @@ class RouterFactory
   public static function build(): Router
   {
     $file = dirname(__DIR__) . '/../config/routes.php';
-    if (!file_exists($file)) {
+    if (! file_exists($file)) {
       throw new \Exception("File about routing table not found");
     }
 
     $request = new Request();
     $route = new Router($request);
-    if (!$route instanceof RouterInterface) {
+    if (! $route instanceof RouterInterface) {
       throw new \UnexpectedValueException("Not valid Router object");
     }
     include dirname(__DIR__) . '/../config/routes.php';

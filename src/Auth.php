@@ -22,14 +22,6 @@ use Src\QueryBuilder;
 class Auth 
 {
 	/**
-	 * Object to instance QueryBuilder class.
-	 *
-	 * @static
-	 * @var object
-	 */
-	protected static object $model;
-
-	/**
 	 * Initialize QueryBuilder class.
 	 *
 	 * @access protected
@@ -37,8 +29,7 @@ class Auth
 	 */
 	protected static function init(): QueryBuilder
 	{
-		self::$model = new QueryBuilder('users');
-		return self::$model;
+		return new QueryBuilder('users');
 	}
 
 	/**
@@ -49,15 +40,7 @@ class Auth
 	 */
 	public static function id(): mixed
 	{
-		$user = Session::get('user');
-		try {
-			if (! $user) {
-				throw new \Exception('User Not Found');
-			}
-			return self::init()->findWhere('username', $user)->id;
-		} catch (\Exception $exc) {
-			printf('%s', $exc->getMessage());
-		}
+		return self::init()->findWhere('username', Session::get('user'))->id;
 	}
 
 }

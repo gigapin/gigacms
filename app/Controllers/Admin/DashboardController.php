@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace App\Controllers\Admin;
 
 use Src\Controller;
-use Src\Session\Session;
 
 /**
  * @package GiGaCMS/Dashboard
@@ -23,14 +22,14 @@ use Src\Session\Session;
 class DashboardController extends Controller
 {
     /**
-     * Display a listing of activities and data about users.
+     * Display a listing of activities of the users.
      *
      * @return mixed
      */
     public function index(): mixed
     {
         return view('dashboard/index', [
-            'sessionuser' => Session::get('user')
+            
         ]);
     }
 }

@@ -28,6 +28,7 @@ use App\Actions\MediaAction;
 use App\Actions\MetaDataAction;
 use App\Actions\RevisionAction;
 use App\Actions\CategoryPostAction;
+use Src\Authorization\Role;
 use Src\Validation\ValidateRequest;
 
 /**
@@ -65,10 +66,8 @@ class PostController extends Controller
    */
   public function index(): mixed
   {
+    
     $posts = $this->post->findAllWhere('user_id', Auth::id());
-    if (!Session::has('user')) {
-      return redirect('login');
-    }
 
     return view('posts/index', [
       'posts' => $posts,
@@ -107,8 +106,7 @@ class PostController extends Controller
       'post_title' => [
         'required' => true,
         'title',
-        'max' => 50,
-        'unique' => [true, new Post('posts')]
+        'max' => 50
       ],
       'post_content' => [
         'required' => true
@@ -117,10 +115,7 @@ class PostController extends Controller
         'now'
       ]
     ];
-    
   }
-
-
 
   /**
    * Store a newly created resource in storage.
@@ -227,7 +222,7 @@ class PostController extends Controller
     }
     ValidateRequest::unsetSession();
 
-    $this->post->update($id, $this->getDataFromForm(true));
+    $this->post->update($id, $this->getDataFromForm());
     $postId = $this->post->findById($id);
 
     $this->media->updateFile($postId->id);
@@ -291,7 +286,7 @@ class PostController extends Controller
    * @access private
    * @return array
    */
-  private function getDataFromForm(bool $update = false): array
+  private function getDataFromForm(): array
   {
     $guid = $this->request()->site() . "/" . slug($this->post('post_title'));
 
@@ -300,7 +295,6 @@ class PostController extends Controller
       'post_date' => $this->post('post_date') !== '' ? $this->post('post_date') : null,
       'post_title' => $this->post('post_title'),
       'post_content' => $this->post('post_content'),
-      'post_excerpt' => $this->post('post_excerpt') !== '' ? $this->post('post_excerpt') : null,
       'post_status' => $this->post('post_status'),
       'comment_status' => $this->post('comment_status'),
       'post_password' => $this->post('post_password') !== '' ? password_hash($this->post('post_password'), PASSWORD_DEFAULT) : null,
@@ -309,7 +303,6 @@ class PostController extends Controller
       'post_parent' => $this->post('post_parent') !== '' ? $this->post('post_parent') : null,
       'guid' => $guid,
       'deleted_at' => null,
-      //'updated_at' => $update === true ? setdate() : null,
     ];
   }
 }

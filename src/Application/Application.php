@@ -14,8 +14,8 @@ namespace Src\Application;
 use Exception;
 use Src\Router\Router;
 use Src\Router\RouterFactory;
-use Src\Session\Session;
 use Src\Session\SessionFactory;
+use Src\Authorization\AuthorizationFactory;
 
 /**
  * 
@@ -38,9 +38,10 @@ class Application
             die(sprintf("Your PHP Version is %s, but for running correctly the application is needed the %s version.", PHP_VERSION, $appVersion));
         }
         $this->initSession();
-        //$this->errorHandling();
-        $this->routing();  
-        
+        //$this->errorHandling();  
+        $this->initAuthorization();
+        $this->initRouter();
+
         return $this;
     }
 
@@ -57,7 +58,7 @@ class Application
     }
 
     /**
-     * Initialized a session
+     * Initialize a session
      * 
      * @return void
      */
@@ -72,9 +73,19 @@ class Application
      * @throws Exception
      * @return Router
      */
-    protected function routing(): Router
+    protected function initRouter(): Router
     {
         return RouterFactory::build();
+    }
+
+    /**
+     * Initialize Authorization class.
+     *
+     * @return string
+     */
+    protected function initAuthorization(): ?string
+    {
+        return AuthorizationFactory::build();
     }
 
 }

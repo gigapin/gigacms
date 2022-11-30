@@ -22,7 +22,7 @@
   <!-- JQVMap -->
   <link rel="stylesheet" href="/adminlte/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css"> 
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
@@ -90,7 +90,7 @@
                 <p>Posts<i class="right fas fa-angle-left"></i></p>
               </a>
             </li>
-            <li class="nav-item menu-open">
+            <li class="nav-item menu-closed">
               <a href="/menus" class="nav-link">
                 <i class="nav-icon fas fa-file-alt"></i>
                 <p>Menus<i class="right fas fa-angle-left"></i></p>
@@ -114,35 +114,24 @@
                 <p>Categories<i class="right fas fa-angle-left"></i></p>
               </a>
             </li>
+           
             <li class="nav-item menu-open">
-              <a href="/posts" class="nav-link">
-                <i class="nav-icon fas fa-tags"></i>
-                <p>Tags<i class="right fas fa-angle-left"></i></p>
-              </a>
-            </li>
-            <li class="nav-item menu-open">
-              <a href="/posts" class="nav-link">
-                <i class="nav-icon fas fa-comments"></i>
-                <p>Comments<i class="right fas fa-angle-left"></i></p>
-              </a>
-            </li>
-            <li class="nav-item menu-open">
-              <a href="/posts" class="nav-link">
+              <a href="/settings" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
                 <p>Settings<i class="right fas fa-angle-left"></i></p>
               </a>
             </li>
-            <li class="nav-item menu-open">
+            <li class="nav-item menu-closed">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
                 <p>Users<i class="right fas fa-angle-left"></i></p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a href="/role-permissions" class="nav-link">
                     <p>User Role Permissions</p>
                   </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <a href="/users" class="nav-link">
                     <p>All Users </p>
@@ -150,6 +139,7 @@
                 </li>
               </ul>
             </li>
+           
             <li class="nav-item menu-open">
               <a href="/logout" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
@@ -163,5 +153,4 @@
       <!-- /.sidebar -->
     </aside>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper kanban">
+    

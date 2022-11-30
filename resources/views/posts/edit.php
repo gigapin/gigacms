@@ -1,5 +1,8 @@
 <?php include '../resources/views/templates/base.php' ?>
 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
 <div class="modal fade" id="modal-danger">
 	<div class="modal-dialog">
 		<div class="modal-content bg-danger">
@@ -147,19 +150,6 @@
 									</div>
 								</div>
 
-								<div class="row">
-									<div class="col-md-12 mb-2">
-										<!-- textarea -->
-										<div class="form-group">
-											<label>Excerpt</label>
-											<textarea class="form-control" rows="3" name="post_excerpt" placeholder="Enter ...">
-												<?php if (isset($post->post_excerpt)): ?>
-													<?= $post->post_excerpt; ?>
-												<?php endif; ?>
-											</textarea>
-										</div>
-									</div>
-								</div>
 							</div><!-- /. tab-pane-active -->
 							<?php include '../resources/views/partials/metadata.php' ?>
               
@@ -398,5 +388,7 @@
 		</div><!-- ./row -->
 	</section><!-- /.content -->
 </form>
+
+</div>
 
 <?php include '../resources/views/templates/footer.php' ?>

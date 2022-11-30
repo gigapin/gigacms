@@ -1,4 +1,6 @@
 <?php include '../resources/views/templates/base.php'; ?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
 <?php if ($alert) : ?>
   <div class="alert alert-warning alert-dismissible" style="margin: 20px;">
@@ -190,4 +192,6 @@
 
   </section>
 </form>
+
+</div>
 <?php include '../resources/views/templates/footer.php'; ?>

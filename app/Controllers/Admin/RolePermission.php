@@ -16,6 +16,8 @@ use Src\Auth;
 use Src\CSRFToken;
 use Src\Controller;
 use App\Models\Role;
+use App\Models\User;
+use Src\Http\Request;
 use Src\Session\Session;
 use App\Models\DefaultRolePermission;
 use App\Models\RolePermission as Permission;
@@ -54,6 +56,8 @@ class RolePermission extends Controller
    */
   protected object $role;
 
+  protected object $user;
+
   /**
    * Constructor
    */
@@ -62,6 +66,7 @@ class RolePermission extends Controller
     $this->permission = new Permission('role_permissions');
     $this->default_permission = new DefaultRolePermission('default_role_permissions');
     $this->role = new Role('roles');
+    $this->user = new User('users');
   }
 
   /**

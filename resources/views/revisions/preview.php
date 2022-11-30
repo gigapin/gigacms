@@ -1,5 +1,8 @@
 <?php include '../resources/views/templates/base.php' ?>
 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
   <div class="modal fade" id="modal-danger">
     <div class="modal-dialog">
       <div class="modal-content bg-danger">
@@ -23,14 +26,14 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Revision # <?= $revision->revision_number; ?></h1>
-          </div>
-          <div class="col-sm-6">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Revision # <?= $revision->revision_number; ?></h1>
+        </div>
+        <div class="col-sm-6">
           <form action="/posts/restore/<?= $revision->id; ?>" method="POST">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
@@ -40,16 +43,16 @@
                 <button type="submit" class="btn btn-app bg-success"><i class="fas fa-save"></i>Restore</button>
               </li>
             </ol>
-            </form>
-          </div>
+          </form>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
 
-    <!-- Main content -->
-    <section class="content">
+  <!-- Main content -->
+  <section class="content">
 
-    <?php if ($revision): ?>
+    <?php if ($revision) : ?>
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
@@ -70,18 +73,20 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="post-footer">
-						<div>
-              <b>Author: </b> <?= $user->username; ?> 
-						</div>
-						<div><b>Created at</b>: <?= $revision->created_at; ?></div>
-					</div>
+            <div>
+              <b>Author: </b> <?= $user->username; ?>
+            </div>
+            <div><b>Created at</b>: <?= $revision->created_at; ?></div>
+          </div>
         </div>
         <!-- /.card-footer-->
       </div>
       <!-- /.card -->
-      <?php endif; ?>
+    <?php endif; ?>
 
-    </section>
-    <!-- /.content -->
+  </section>
+  <!-- /.content -->
+
+</div>
 
 <?php include '../resources/views/templates/footer.php' ?>

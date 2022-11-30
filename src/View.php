@@ -12,13 +12,6 @@ declare(strict_types=1);
 namespace Src;
 
 use Exception;
-use Src\Http\Redirect;
-use Src\Session\Session;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-use Twig\Loader\FilesystemLoader;
 
 /**
  * @package GiGaFlow\View
@@ -41,45 +34,13 @@ class View
     $realPath = realpath(__DIR__ . "/../resources/views/" . $path . ".php");
     try {
       if (file_exists($realPath) && is_readable($realPath)) {
-        if (Session::has('user')) {
           return require __DIR__ . "/../resources/views/$path.php";
-        } else {
-          return require __DIR__ . "/../resources/views/auth/login.php";
-        }
       } else {
         throw new Exception("$realPath not found");
       }
     } catch (Exception $exc) {
       printf("%s", $exc->getMessage());
     } 
-  }
-
-  /**
-   * Rendering with Twig Template.
-   *
-   * @param $template
-   * @param array $args
-   */
-  public static function renderTemplate($template, array $args = [])
-  {
-    static $twig = null;
-    if ($twig === null) {
-      $loader = new FilesystemLoader(__DIR__ . '/../resources/views');
-      $twig = new Environment($loader);
-    }
-
-    try {
-      if (isset($_SESSION['flash_message']['FLASH_SUCCESS'])) {
-        $args['session'] = $_SESSION['flash_message']['FLASH_SUCCESS'];
-        unset($_SESSION['flash_message']['FLASH_SUCCESS']);
-      }
-      if (isset($_SESSION['user'])) {
-        $args['sessionuser'] = $_SESSION['user'];
-      }
-      echo $twig->render($template, $args);
-    } catch (LoaderError | RuntimeError | SyntaxError $e) {
-      echo $e->getMessage();
-    }
   }
 
   /**
@@ -140,5 +101,20 @@ class View
   public static function showException(string $exception): void
   {
     self::render('errors/showException', compact('exception'));
+  }
+
+  /**
+   * Rendering of a page displayed when is not active an user session.
+   *
+   * @param string $exception
+   * @param integer $code
+   * @return void
+   */
+  public static function showExceptionWithRedirectToLogin(string $exception, int $code): void 
+  {
+    self::render('errors/showExceptionRedirectLogin', [
+      'exception' => $exception,
+      'code' => $code
+    ]);
   }
 }

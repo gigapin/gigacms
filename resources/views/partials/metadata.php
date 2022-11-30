@@ -3,11 +3,14 @@
     <div class="col-md-12 mb-2">
       <div class="form-group">
         <label>Meta Description</label>
-        <textarea class="form-control" name="meta_description" rows="3">
-          <?php if (isset($metadata->meta_description)): ?>
-            <?= $metadata->meta_description ?>
+        <input 
+          type="text" 
+          class="form-control" 
+          name="meta_description"
+          <?php if (isset($metadata)) : ?>
+          value="<?= $metadata->meta_description !== null ? $metadata->meta_description : ''; ?>"
           <?php endif; ?>
-        </textarea>
+        >  
       </div>
     </div>
   </div>
@@ -16,11 +19,14 @@
     <div class="col-md-12 mb-2">
       <div class="form-group">
         <label>Keywords</label>
-        <textarea class="form-control" name="keywords">
-          <?php if (isset($metadata->keywords)): ?>
-            <?= $metadata->keywords ?>
+        <input 
+          type="text" 
+          class="form-control" 
+          name="keywords"
+          <?php if (isset($metadata)) : ?>
+          value="<?= $metadata->keywords !== null ? $metadata->keywords : ''; ?>"
           <?php endif; ?>
-        </textarea>
+        >  
       </div>
     </div>
   </div>
@@ -57,11 +63,14 @@
     <div class="col-md-12 mb-2">
       <div class="form-group">
         <label>Author</label>
-        <input type="text" class="form-control" name="author" value=" 
-        <?php if (isset($metadata->author)): ?>
-          <?= $metadata->author ?>
-        <?php endif; ?>
-        ">
+        <input 
+          type="text" 
+          class="form-control" 
+          name="author" 
+          <?php if (isset($metadata)) : ?>
+          value="<?= $metadata->author !== null ? $metadata->author : ''; ?>"
+          <?php endif; ?>
+        >
       </div>
     </div>
   </div>

@@ -84,7 +84,10 @@ class RegisterController extends Controller
 			'name' => $this->post('name'),
 			'username' => $this->post('username'),
 			'email' => $this->post('email'),
-			'password' => password_hash($this->post('password'), PASSWORD_DEFAULT)
+			'password' => password_hash($this->post('password'), PASSWORD_DEFAULT),
+			'role' => 1,
+			'status' => 1,
+			'created_by' => 1
 		];
 		
 		$this->user->insert($data);

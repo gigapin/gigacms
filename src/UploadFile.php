@@ -49,7 +49,7 @@ trait UploadFile
    * @access protected
    * @var string
    */
-  protected string $error;
+  protected int $error;
 
   /**
    * Set size.
@@ -109,10 +109,10 @@ trait UploadFile
   /**
    * Set file name.
    * 
-   * @param string $fileName
+   * @param array $fileName
    * @return void
    */
-  public function setName(string $fileName): void
+  public function setName(array $fileName): void
   {
     $this->name = $fileName['name'];
   }
@@ -130,10 +130,10 @@ trait UploadFile
   /**
    * Set file type.
    * 
-   * @param string $fileName
+   * @param array $fileName
    * @return void
    */
-  public function setType(string $fileName): void
+  public function setType(array $fileName): void
   {
     $this->type = $fileName['type'];
   }
@@ -151,10 +151,10 @@ trait UploadFile
   /**
    * Set temporary file name.
    * 
-   * @param string $fileName
+   * @param array $fileName
    * @return void
    */
-  public function setTmpName(string $fileName): void
+  public function setTmpName(array $fileName): void
   {
     $this->tmp_name = $fileName['tmp_name'];
   }
@@ -164,7 +164,7 @@ trait UploadFile
    * 
    * @return string
    */
-  public function getError(): string
+  public function getError(): mixed
   {
     return $this->error;
   }
@@ -172,11 +172,11 @@ trait UploadFile
   /**
    * Manage the errors.
    * 
-   * @param string $fileName
-   * @return mixed
+   * @param array $fileName
+   * @return void
    * @throws \RuntimeException
    */
-  public function setError(string $fileName): mixed
+  public function setError(array $fileName): void
   {
     $this->error = $fileName['error'];
     switch ($this->error) {
@@ -205,11 +205,11 @@ trait UploadFile
   /**
    * Set file size.
    * 
-   * @param int $fileName
+   * @param array $fileName
    * @return void
    * @throws \RuntimeException
    */
-  public function setSize(int $fileName): void
+  public function setSize(array $fileName): void
   {
     $this->size = $fileName['size'];
     if ($this->size > $this->max_size) {
@@ -263,10 +263,10 @@ trait UploadFile
    * Move file uploaded to path assigned.
    * 
    * @static
-   * @param string $fileName
+   * @param array $fileName
    * @return mixed
    */
-  public static function move($fileName): mixed
+  public static function move(array $fileName): mixed
   {
     $dir = __DIR__ . self::getPathFile();
 
@@ -281,11 +281,11 @@ trait UploadFile
   /**
    * Checks format file.
    *
-   * @param string $fileName
+   * @param array $fileName
    * @return void
    * @throws \RuntimeException
    */
-  protected function mimeType(string $fileName): void
+  protected function mimeType(array $fileName): void
   {
     $finfo = new \finfo(FILEINFO_MIME_TYPE);
     if (false === $ext = array_search(
@@ -300,24 +300,24 @@ trait UploadFile
   /**
    * If file uploaded hasn't errors it will be stored within directory selected.
    * 
-   * @param mixed $fileName
-   * @return  mixed
+   * @param array $fileName
+   * @return  void
    * @throws \RuntimeException
    */
-  public function moveUploadedFile(mixed $fileName): mixed
+  public function moveUploadedFile(array $fileName): void
   {
-    $dir = __DIR__ . $this->getMovePathFile();
+    $dir = __DIR__ . "/../public/uploads";
     if (! is_dir($dir)) {
       mkdir($dir);
     }
-
+   
     try {
       $this->setTmpName($fileName);
       $this->setName($fileName);
       $this->setSize($fileName);
       $this->mimeType($fileName);
       $this->setError($fileName);
-
+      
       if ($this->getError() === 0) {
         $baseName = basename($this->getName());
         move_uploaded_file($this->getTmpName(), "$dir/$baseName");

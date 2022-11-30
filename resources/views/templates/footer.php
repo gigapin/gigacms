@@ -60,7 +60,7 @@
         tinymce.init({
             selector: 'textarea#editor',
             height: 400,
-            plugins: 'image lists table link',
+            plugins: 'lists table link',
             toolbar: [
                 'styles | bold italic | alignleft aligncenter alignright | numlist bullist | link image | table',
             ], 

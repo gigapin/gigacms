@@ -1,5 +1,8 @@
 <?php include '../resources/views/templates/base.php' ?>
 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
 <div class="modal fade" id="modal-danger">
 	<div class="modal-dialog">
 		<div class="modal-content bg-danger">
@@ -142,5 +145,7 @@
 
 </section>
 <!-- /.content -->
+
+</div>
 
 <?php include '../resources/views/templates/footer.php' ?>

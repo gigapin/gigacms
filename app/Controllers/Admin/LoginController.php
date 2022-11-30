@@ -15,6 +15,7 @@ use Exception;
 use Src\CSRFToken;
 use Src\Controller;
 use App\Models\User;
+use Src\Authorization\Authorization;
 use Src\Http\Redirect;
 use Src\Session\Session;
 

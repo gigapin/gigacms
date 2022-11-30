@@ -1,5 +1,8 @@
 <?php include '../resources/views/templates/base.php'; ?>
 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
@@ -57,4 +60,6 @@
   <?php endif; ?>
 </section>
 <!-- /.content -->
+
+</div>
 <?php include '../resources/views/templates/footer.php'; ?>

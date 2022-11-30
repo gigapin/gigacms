@@ -1,26 +1,28 @@
 <?php include '../resources/views/templates/base.php' ?>
 
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Post Versions</h1>
-          </div>
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Post Versions</h1>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
 
-    <!-- Main content -->
-    <section class="content">
+  <!-- Main content -->
+  <section class="content">
 
-    <?php foreach ($revisions as $revision): ?>
+    <?php foreach ($revisions as $revision) : ?>
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
-            <a href="/revisions/preview/<?= $revision->id; ?>">  
+            <a href="/revisions/preview/<?= $revision->id; ?>">
               <?= $revision->post_title; ?>
             </a>
           </h3>
@@ -36,18 +38,20 @@
         <!-- /.card-body -->
         <div class="card-footer">
           <div class="post-footer">
-						<div>
+            <div>
               <b>Revision Number</b>: <?= $revision->revision_number; ?>
-						</div>
-						<div><b>Created at</b>: <?= $revision->created_at ?></div>
-					</div>
+            </div>
+            <div><b>Created at</b>: <?= $revision->created_at ?></div>
+          </div>
         </div>
         <!-- /.card-footer-->
       </div>
       <!-- /.card -->
-      <?php endforeach; ?>
+    <?php endforeach; ?>
 
-    </section>
-    <!-- /.content -->
+  </section>
+  <!-- /.content -->
+
+</div>
 
 <?php include '../resources/views/templates/footer.php' ?>
