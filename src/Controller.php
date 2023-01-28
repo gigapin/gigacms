@@ -38,19 +38,6 @@ abstract class Controller
   }
 
   /**
-   * Rendering of the html page within Twig template.
-   *
-   * @param string $path
-   * @param array $data
-   * @return mixed
-   * @throws Exception
-   */
-  public function template(string $path, array $data = []): mixed
-  {
-    return View::renderTemplate($path, $data);
-  }
-
-  /**
    * Instance of the Request class.
    *
    * @return Request
