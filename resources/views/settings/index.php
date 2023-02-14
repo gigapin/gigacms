@@ -117,7 +117,7 @@
               <h5>Metadata</h5>
               <label>Site Meta Description</label>
               <textarea name="option_name[meta_description]" id="" rows="3" class="form-control">
-                <?= $settings->findWhere('option_name', 'meta_description')->option_value; ?>  
+                <?= ltrim($settings->findWhere('option_name', 'meta_description')->option_value); ?>  
               </textarea>
              
               <div class="form-group">

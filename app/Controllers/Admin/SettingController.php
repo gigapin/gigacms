@@ -100,7 +100,6 @@ class SettingController extends Controller
    */
   public function store(): mixed
   {
-    //dd(Request::multiPost('option_name'));
     $data = array();
     if (is_null($this->setting->findAll())) {
       foreach (Request::multiPost('option_name') as $option_name => $option_value) {
