@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Src\Auth;
 use Src\Controller;
+use App\Models\Post;
 
 /**
  * @package GiGaCMS/Dashboard
@@ -21,15 +23,23 @@ use Src\Controller;
  */
 class DashboardController extends Controller
 {
-    /**
-     * Display a listing of activities of the users.
-     *
-     * @return mixed
-     */
-    public function index(): mixed
-    {
-        return view('dashboard/index', [
-            
-        ]);
-    }
+  protected object $posts;
+
+  public function __construct()
+  {
+    $this->posts = new Post('posts');  
+  }
+
+  /**
+   * Display a listing of activities of the users.
+   *
+   * @return mixed
+   */
+  public function index(): mixed
+  {
+    return view('dashboard/index', [
+      'posts' => $this->posts->findLatest('user_id', Auth::id(), 6),
+      'username' => $this->posts->users(),
+    ]);
+  }
 }

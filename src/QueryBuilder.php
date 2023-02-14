@@ -58,7 +58,7 @@ class QueryBuilder extends Model
 	{
 		$stmt = Model::getDB()->query("SELECT * FROM $this->table ORDER BY $orderBy $sort"); 
 		
-      return $stmt->fetchAll($fetchType);
+    return $stmt->fetchAll($fetchType);
 	}
 
 	/**
@@ -111,6 +111,34 @@ class QueryBuilder extends Model
 		}
 		
 		return $stmt->fetch($fetchType);
+	}
+
+	/**
+	 * Find latest records with one condition true.
+	 *
+	 * @param string $field
+	 * @param string $value
+	 * @param int $fetchType
+	 * @return mixed
+	 */
+	public function findLatest(
+		string $field, 
+		string|int $value,
+		int $limit,
+		int $fetchType = \PDO::FETCH_OBJ
+	): mixed
+	{
+		$sql = "SELECT * FROM $this->table WHERE $field = :$field ORDER BY id DESC LIMIT $limit";
+		$stmt = Model::getDB()->prepare($sql);
+		$stmt->bindValue(":$field", $value);
+		
+		if (! $stmt->execute()) {
+			throw new \Exception(sprintf(
+				"Error PDO exec: %s", implode(", ", Model::getDB()->errorInfo())
+			));
+		}
+		
+		return $stmt->fetchAll($fetchType);
 	}
 
 	/**

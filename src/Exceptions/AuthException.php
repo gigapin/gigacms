@@ -14,7 +14,6 @@ namespace Src\Exceptions;
 use Src\View;
 use \Exception;
 use \Throwable;
-use Src\Http\Redirect;
 
 /**
  * @package GiGaFlow\Exceptions

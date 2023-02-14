@@ -43,9 +43,10 @@ class RouterFactory
     if (! $route instanceof RouterInterface) {
       throw new \UnexpectedValueException("Not valid Router object");
     }
+    
     include dirname(__DIR__) . '/../config/routes.php';
     $route->match($request->uri());
-
+    
     return $route;
   }
 }

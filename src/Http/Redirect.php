@@ -27,7 +27,7 @@ class Redirect
     public static function to(string $path): void
     {
         $host  = $_SERVER['HTTP_HOST'];
-        $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+        $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
         header("Location: http://$host$uri/$path");
     }
 

@@ -21,3 +21,13 @@
 //   }
 // })
 
+/*const siteOffline = document.getElementById('site-offline');
+const submitSetting = document.getElementById('submit-setting');
+
+submitSetting.addEventListener('click', function(evt) {
+  evt.preventDefault();
+  alert("siteOffline.target.value");
+  if (siteOffline.checked !== true) {
+    siteOffline.value = 'off';
+  }
+});*/

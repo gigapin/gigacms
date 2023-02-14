@@ -37,11 +37,14 @@ class Application
         if (version_compare(PHP_VERSION, $appVersion = Config::$appVersion, '<')) {
             die(sprintf("Your PHP Version is %s, but for running correctly the application is needed the %s version.", PHP_VERSION, $appVersion));
         }
+        
         $this->initSession();
+        
         //$this->errorHandling();  
         $this->initAuthorization();
+        
         $this->initRouter();
-
+        
         return $this;
     }
 
