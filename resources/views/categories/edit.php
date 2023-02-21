@@ -85,7 +85,7 @@
               </div>
             </div>
 
-            <div class="row">
+           <!--  <div class="row">
               <div class="col-md-12">
                 <label>Category Status</label>
                 <?php if ($category->category_status === 'published') : ?>
@@ -146,7 +146,7 @@
                 <?php endif ?>
               </div>
             </div>
-
+ -->
           </div>
         </div>
       </div>

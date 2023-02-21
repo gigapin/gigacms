@@ -141,7 +141,8 @@ class UserController extends Controller
       }
       return view('users/index', [
         'users' => $this->user->findAll(),
-        'role' => $this->user->role()
+        'user_role' => $this->user->role(),
+        'roles' => $this->role->findAll()
       ]);
     } catch (AuthException $auth) {
       printf('%s %d', $auth->getMessage(), $auth->getCode());

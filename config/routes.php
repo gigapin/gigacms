@@ -27,6 +27,22 @@ use App\Controllers\Admin\RegisterController;
 use App\Controllers\Admin\RevisionController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\SettingController;
+use App\Api\v1\Controllers\TestController;
+use App\Api\v1\Controllers\ApiPostController;
+use App\Api\v1\Controllers\ApiMenuItemsController;
+use App\Api\v1\Controllers\ApiCategoryController;
+use App\Api\v1\Controllers\ApiMenuController;
+
+/** 
+ * API 
+ * 
+*/
+
+$route->get('/api/v1/test', [TestController::class, 'index']);
+$route->get('/api/v1/posts', [ApiPostController::class, 'index']);
+$route->get('/api/v1/menuitems', [ApiMenuItemsController::class, 'index']);
+$route->get('/api/v1/categories', [ApiCategoryController::class, 'index']);
+$route->get('/api/v1/menus', [ApiMenuController::class, 'index']);
 
 /** HOME */
 $route->get('/', [HomeController::class, 'index']);

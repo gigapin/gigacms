@@ -77,11 +77,22 @@ class User extends QueryBuilder
    */
 	public function role(): mixed
   {
-    $sql = "SELECT name_role FROM
+    $sql = "SELECT roles.name_role FROM
       users INNER JOIN roles
-      ON users.role = roles.alias_name_role";
+      ON users.role = roles.id";
     $stmt = Model::getDB()->query($sql);
 
     return $stmt->fetch(\PDO::FETCH_OBJ);
+  }
+
+	public function roles(int $id = 2): mixed
+  {
+    $sql = "SELECT roles.name_role FROM
+      users INNER JOIN roles
+      ON users.role = roles.id
+			AND roles.id = $id";
+    $stmt = Model::getDB()->query($sql);
+
+    return $stmt->fetchAll(\PDO::FETCH_OBJ);
   }
 }

@@ -53,7 +53,11 @@
             </div>
             <div>
               <p>Role</p>
-              <?= $user->role === '1' ? 'Root' : $user->role; ?>
+              <?php foreach ($roles as $role): ?>
+                <?php if ($role->id === $user->role) : ?>
+                  <?= $role->name_role; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
             </div>
             <div>
               <p>Created At</p>

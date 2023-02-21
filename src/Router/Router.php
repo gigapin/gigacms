@@ -155,6 +155,16 @@ class Router implements RouterInterface
     return null;
   }
 
+  public function option(string $path, array $params)
+  {
+    if ($this->request->method() === 'options') {
+      header('Access-Control-Allow-Methods: POST, OPTIONS');
+      header('Access-Control-Allow-Headers: Content-Type');
+      header('Access-Control-max-Age: 86400');
+      $this->map($path, $params);
+    }
+  }
+
   /**
    * @inheritDoc
    *
@@ -205,6 +215,7 @@ class Router implements RouterInterface
         throw new \Exception("Method not found");
       }
     } else {
+      dd($controller);
       throw new \Exception("Class not found");
     }
   }

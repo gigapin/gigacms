@@ -41,7 +41,7 @@ class Application
         $this->initSession();
         
         //$this->errorHandling();  
-        $this->initAuthorization();
+        //$this->initAuthorization();
         
         $this->initRouter();
         

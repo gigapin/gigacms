@@ -52,22 +52,6 @@ if (! function_exists('view')) :
 endif;
 
 /**
- * Helper to rendering the Twig template engine layout of a page.
- * 
- * @param string $path
- * @param array $data
- * @throws RuntimeError
- * @throws SyntaxError
- * @throws LoaderError
- */
-if (! function_exists('view')) :
-  function render(string $path, array $data = [])
-  {
-    View::renderTemplate($path, $data);
-  }
-endif;
-
-/**
  * Redirect to another url.
  * 
  * @param string $url
@@ -95,7 +79,7 @@ endif;
  * generate a slug.
  *
  * @param string $value
- * @return void
+ * @return string
  */
 if (!function_exists('slug')) :
   function slug(string $value)
@@ -104,6 +88,11 @@ if (!function_exists('slug')) :
   }
 endif;
 
+/** 
+ * Set date.
+ * 
+ * @return mixed
+*/
 if (!function_exists('setDate')) :
   function setDate()
   {
