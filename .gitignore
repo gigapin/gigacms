@@ -1,8 +1,7 @@
 /node_modules
 /public/uploads/*
 /vendor
-/config/database.php
 /storage/logs/*
 .idea
 .env
-todo.txt
+

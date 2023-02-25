@@ -79,7 +79,7 @@
                 <select name="link" id="" class="form-control">
                   <option value=""></option>
                   <?php foreach ($posts as $post) : ?>
-                    <option value="<?= $post->guid ?>"><?= $post->post_title ?></option>
+                    <option value="<?= $post->post_name ?>"><?= $post->post_title ?></option>
                   <?php endforeach; ?>
                 </select>
               <?php else : ?>

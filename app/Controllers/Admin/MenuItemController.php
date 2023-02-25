@@ -83,7 +83,7 @@ class MenuItemController extends Controller
 
     return view('menu_items/create', [
       'alert' => $alert,
-      'posts' => $this->posts->findAllWhere('user_id', Auth::id()),
+      'posts' => $this->posts->findAllWhereAnd('user_id', Auth::id(), 'post_status', 'published'),
       'menus' => $this->menu->findAllWhere('created_by', Auth::id()),
       'status' => $this->status()->findAll(),
       'access' => $this->access()->findAll()
@@ -114,7 +114,7 @@ class MenuItemController extends Controller
     return view('menu_items/edit', [
       'menuItem' => $this->menuItem->findById($id),
       'menus' => $this->menu->findAllWhere('created_by', Auth::id()),
-      'posts' => $this->posts->findAllWhere('user_id', Auth::id()),
+      'posts' => $this->posts->findAllWhereAnd('user_id', Auth::id(), 'post_status', 'published'),
       'status' => $this->status()->findAll(),
       'access' => $this->access()->findAll()
     ]);

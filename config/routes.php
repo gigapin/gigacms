@@ -40,8 +40,11 @@ use App\Api\v1\Controllers\ApiMenuController;
 
 $route->get('/api/v1/test', [TestController::class, 'index']);
 $route->get('/api/v1/posts', [ApiPostController::class, 'index']);
+$route->get('/api/v1/blog', [ApiPostController::class, 'blog']);
+$route->get('/api/v1/posts/{slug}', [ApiPostController::class, 'show']);
 $route->get('/api/v1/menuitems', [ApiMenuItemsController::class, 'index']);
 $route->get('/api/v1/categories', [ApiCategoryController::class, 'index']);
+$route->get('/api/v1/categories/{slug}', [ApiCategoryController::class, 'show']);
 $route->get('/api/v1/menus', [ApiMenuController::class, 'index']);
 
 /** HOME */

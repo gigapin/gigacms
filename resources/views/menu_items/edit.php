@@ -79,10 +79,10 @@
                   <?php if ($posts) : ?>
                     <select name="link" id="" class="form-control">
                       <?php foreach ($posts as $post) : ?>
-                        <?php if ($menuItem->link === $post->guid) : ?>
-                          <option value="<?= $post->guid ?>" selected><?= $post->post_title ?></option>
+                        <?php if ($menuItem->link === $post->post_name) : ?>
+                          <option value="<?= $post->post_name ?>" selected><?= $post->post_title ?></option>
                         <?php endif; ?>
-                        <option value="<?= $post->guid ?>"><?= $post->post_title ?></option>
+                        <option value="<?= $post->post_name ?>"><?= $post->post_title ?></option>
                       <?php endforeach; ?>
                     </select>
                   <?php else : ?>

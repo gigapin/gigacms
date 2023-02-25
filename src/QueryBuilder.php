@@ -256,6 +256,39 @@ class QueryBuilder extends Model
 	}
 
 	/**
+	 * Find all records have two conditions true.
+	 *
+	 * @param string $firstField
+	 * @param string $firstValue
+	 * @param string $secondField
+	 * @param string|int $secondValue
+	 * @param int $fetchType
+	 * @return mixed
+	 */
+	public function findAllWhereAnd(
+		string $firstField, 
+		string|int $firstValue,
+		string $secondField,
+		string|int $secondValue,
+		int $fetchType = \PDO::FETCH_OBJ
+	): mixed
+	{
+		$sql = "SELECT * FROM $this->table WHERE $firstField = :$firstField AND $secondField = :$secondField";
+		$stmt = Model::getDB()->prepare($sql);
+		$data = [
+			":$firstField" => $firstValue,
+			":$secondField" => $secondValue
+		];
+		if (! $stmt->execute($data)) {
+			throw new \Exception(sprintf(
+				"Error PDO exec: %s", implode(", ", Model::getDB()->errorInfo())
+			));
+		}
+		
+		return $stmt->fetchAll($fetchType);
+	}
+
+	/**
 	 * Insert record into database.
 	 *
 	 * @param array $values
