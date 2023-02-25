@@ -2,7 +2,7 @@
   /***************************************************
    * Only these origins are allowed to upload images *
    ***************************************************/
-  $accepted_origins = array("http://localhost", "http://192.168.1.1", "http://gigacms.test");
+  $accepted_origins = array("http://localhost", "http://192.168.1.1", "https://gigacms.com");
 
   /*********************************************
    * Change this line to set the upload folder *

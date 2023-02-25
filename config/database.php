@@ -20,19 +20,19 @@ return [
    */
   'DB_DRIVERS' => [
     'MYSQL' => [
-      'DB_HOST' => 'localhost',
-      'DB_USER' => 'root',
-      'DB_NAME' => 'gigacms_db',
-      'DB_PASS' => '13esimoFloor',
+      'DB_HOST' => $_ENV['DB_HOST'],
+      'DB_USER' => $_ENV['DB_USERNAME'],
+      'DB_NAME' => $_ENV['DB_DATABASE'],
+      'DB_PASS' => $_ENV['DB_PASSWORD'],
     ],
     'SQLITE' => [
       'FILE' => 'storage/database/sqlite.db'
     ],
     'PGSQL' => [
-      'DB_HOST' => 'localhost',
-      'DB_USER' => '',
-      'DB_NAME' => '',
-      'DB_PASS' => '',
+      'DB_HOST' => $_ENV['DB_HOST'],
+      'DB_USER' => $_ENV['DB_USERNAME'],
+      'DB_NAME' => $_ENV['DB_DATABASE'],
+      'DB_PASS' => $_ENV['DB_PASSWORD'],
     ],
   ]
 ];
