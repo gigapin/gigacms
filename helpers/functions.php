@@ -45,9 +45,13 @@ endif;
  * @throws \Exception
  */
 if (! function_exists('view')) :
-  function view(string $path, array $data = [])
+  function view(string $path, array $data = []): View
   {
-    View::render($path, $data);
+      try {
+          View::render($path, $data);
+      } catch (Exception $e) {
+          View::show500();
+      }
   }
 endif;
 
