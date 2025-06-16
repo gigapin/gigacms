@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Exception;
 use Src\Auth;
 use Src\Controller;
 use App\Models\Role;
@@ -33,17 +34,17 @@ class RoleController extends Controller
    * Create an instance of the Role model class.
    *
    * @access protected
-   * @var object
+   * @var Role
    */
-  protected object $role;
+  protected Role $role;
 
   /**
    * Create an instance of the RolePermission model class.
    *
    * @access protected
-   * @var object
+   * @var RolePermissionController
    */
-  protected object $permission;
+  protected RolePermission $permission;
 
   /**
    * Constructor
@@ -80,6 +81,7 @@ class RoleController extends Controller
    *
    * @access private
    * @return array
+   * @throws Exception
    */
   private function getRole(): array
   {
@@ -119,12 +121,13 @@ class RoleController extends Controller
   /**
    * Storing role and role permission fromdata get from the specific form.
    *
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function store(): mixed
+  public function store(): void
   {
     if (! is_null(Request::validate($this->setValidationRule()))) {
-      return ValidateRequest::storingSession($this->setValidationRule(), 'role-permissions');
+      ValidateRequest::storingSession($this->setValidationRule(), 'role-permissions');
     }
     ValidateRequest::unsetSession();
     
@@ -133,6 +136,6 @@ class RoleController extends Controller
     $this->permission->insert($this->setRole($role_added->id));
     Session::setFlashMessage('FLASH_SUCCESS', 'Role added correctly');
 
-    return redirect('role-permissions');
+    redirect('role-permissions');
   }
 }

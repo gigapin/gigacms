@@ -18,6 +18,7 @@ use App\Models\User;
 use Src\Authorization\Authorization;
 use Src\Http\Redirect;
 use Src\Session\Session;
+use Src\View;
 
 /**
 * @package GiGaCMS/Login
@@ -56,23 +57,23 @@ class LoginController extends Controller
 	/**
 	 * Display a form for log in.
 	 *
-	 * @return mixed
-	 */
-	public function login(): mixed
-	{
+	 * @return View
+   */
+	public function login(): View
+  {
 		return view('auth/login', [
 			'token' => CSRFToken::token()
 		]);
 	}
 
-	/**
-	 * Checks if credentials entered from the user are valid.
-	 *
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function signin(): mixed
-	{
+  /**
+   * Checks if credentials entered from the user are valid.
+   *
+   * @return int|View|bool
+   * @throws Exception
+   */
+	public function signin(): int|View|bool
+  {
 		CSRFToken::verifyToken();
 		$errors = $this->request()->validate([
 			'email' => [
@@ -97,20 +98,22 @@ class LoginController extends Controller
 			
 			Session::set('user', $pass->username);
 			Redirect::to('dashboard');
-			
+
+			return true;
 		} catch (\Exception $exc) {
-			printf("%s", $exc->getMessage());
+			return printf("%s", $exc->getMessage());
 		}
 	}
 
-	/**
-	 * Destroy user session and redirect him to login page.
-	 *
-	 * @return mixed
-	 */
-	public function logout(): mixed
-	{
+  /**
+   * Destroy user session and redirect him to login page.
+   *
+   * @return void
+   * @throws Exception
+   */
+	public function logout(): void
+  {
 		Session::remove('user');
-		return redirect('login');
+		redirect('login');
 	}
 }

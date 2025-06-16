@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use App\Models\Status;
+use Exception;
 use Src\Auth;
 use Src\CSRFToken;
 use Src\Controller;
@@ -22,6 +24,7 @@ use App\Models\RoleUser;
 use Src\Exceptions\AuthException;
 use Src\Session\Session;
 use Src\Validation\ValidateRequest;
+use Src\View;
 
 /**
  * 
@@ -36,33 +39,33 @@ class UserController extends Controller
    * Create an instance of the User model class.
    * 
    * @access protected
-   * @var object
+   * @var User
    */
-  protected object $user;
+  protected User $user;
 
   /**
    * Create an instance of the Status model class.
    * 
    * @access protected
-   * @var object
+   * @var Status
    */
-  protected object $status;
+  protected Status $status;
 
   /**
    * Create an instance of the Role model class.
    * 
    * @access protected
-   * @var object
+   * @var Role
    */
-  protected object $role;
+  protected Role $role;
 
   /**
    * Create an instance of the RoleUser model class.
    * 
    * @access protected
-   * @var object
+   * @var RoleUser
    */
-  protected object $role_user;
+  protected RoleUser $role_user;
 
   /**
    * Constructor
@@ -112,6 +115,7 @@ class UserController extends Controller
    *
    * @access private
    * @return array
+   * @throws Exception
    */
   private function getData(): array
   {
@@ -127,11 +131,12 @@ class UserController extends Controller
   }
 
   /**
-   * Displ;ay a listing of all users created.
+   * Display a listing of all users created.
    *
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function index(): mixed
+  public function index(): View
   {
     $role = $this->user->findWhere('username', Session::get('user'));
     
@@ -139,6 +144,7 @@ class UserController extends Controller
       if ($role->role !== 1 && $role->role !== 2) {
         throw new AuthException('Cannot access to this resource');
       }
+
       return view('users/index', [
         'users' => $this->user->findAll(),
         'user_role' => $this->user->role(),
@@ -153,9 +159,10 @@ class UserController extends Controller
   /**
    * Display a form for create a new user.
    *
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function create(): mixed
+  public function create(): View
   {
     $role = $this->user->findWhere('username', Session::get('user'));
     
@@ -163,6 +170,7 @@ class UserController extends Controller
       if ($role->role !== 1 && $role->role !== 2) {
         throw new AuthException('Cannot access to this resource');
       }
+
       return view('users/create', [
         'roles' => $this->role->findAllWhereNot('alias_name_role', 'root'),
         'token' => CSRFToken::token()
@@ -176,35 +184,38 @@ class UserController extends Controller
   /**
    * Storing data of the user added.
    *
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function store(): mixed 
+  public function store(): void
   {
     if (! is_null(Request::validate($this->setValidationRule()))) {
-      return ValidateRequest::storingSession($this->setValidationRule(), 'users/create'); 
+      ValidateRequest::storingSession($this->setValidationRule(), 'users/create');
     }
     ValidateRequest::unsetSession();
         
     $this->user->insert($this->getData());
     $user = $this->user->findWhere('username', $this->getData()['username']);
+
     $this->role_user->insert([
       'user_id' => $user->id,
       'role_id' => $user->role,
       'created_by' => Auth::id()
     ]);
+
     Session::setFlashMessage('FLASH_SUCCESS', 'User created successfully');
 
-    return redirect('users');
+    redirect('users');
   }
 
   /**
    * Show a form to modify data of a user.
    *
    * @param integer $id
-   * @throws \Exception
-   * @return mixed
+   * @return int|View
+   * @throws Exception
    */
-  public function edit(int $id): mixed
+  public function edit(int $id): int|View
   {
     $getUser = $this->user->findById($id);
     $role = $this->user->findWhere('username', Session::get('user'));
@@ -214,9 +225,8 @@ class UserController extends Controller
         throw new AuthException('Cannot access to this resource');
       }
       if (! $getUser) {
-        throw new \Exception('User Not Found');
+        throw new Exception('User Not Found');
       }
-
 
       return view('users/edit', [
         'user' => $getUser,
@@ -224,11 +234,8 @@ class UserController extends Controller
         'user_role' => $this->user->role(),
         'roles' => $this->role->findAllWhereNot('alias_name_role', 'root'),
       ]);
-    } catch (\Exception $exc) {
-      printf('%s', $exc->getMessage());
-    } catch (AuthException $auth) {
-      printf('%s %d', $auth->getMessage(), $auth->getCode());
-      exit();
+    } catch (Exception $exc) {
+      return printf('%s', $exc->getMessage());
     }
   }
 
@@ -236,12 +243,13 @@ class UserController extends Controller
    * Storing updated data of a specific user.
    *
    * @param integer $id
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function update(int $id): mixed
+  public function update(int $id): void
   {
     if (! is_null(Request::validate($this->setValidationRule()))) {
-      return ValidateRequest::storingSession($this->setValidationRule(), 'users/edit/' . $id); 
+      ValidateRequest::storingSession($this->setValidationRule(), 'users/edit/' . $id);
     }
     ValidateRequest::unsetSession();
 
@@ -253,19 +261,20 @@ class UserController extends Controller
       'role_id' => $user->role,
       'created_by' => Auth::id()
     ]);
+
     Session::setFlashMessage('FLASH_SUCCESS', 'User updated successfully');
 
-    return redirect('users/edit/' . $id);
+    redirect('users/edit/' . $id);
   }
 
   /**
    * Remove a specific user.
    *
    * @param integer $id
-   * @throws \Exception
-   * @return mixed   
+   * @return void
+   *@throws Exception
    */
-  public function delete(int $id): mixed 
+  public function delete(int $id): void
   {
     $role = $this->user->findWhere('username', Session::get('user'));
     
@@ -273,18 +282,16 @@ class UserController extends Controller
       if ($role->role !== 1 && $role->role !== 2) {
         throw new AuthException('Cannot access to this resource');
       }
+
       if (! $this->user->findById($id)) {
-        throw new \Exception('User Not Found');
+        throw new Exception('User Not Found');
       }
 
       $this->user->delete($id);
 
-      return redirect('users');
-    } catch (\Exception $exc) {
+      redirect('users');
+    } catch (Exception $exc) {
         printf('%s', $exc->getMessage());
-    } catch (AuthException $auth) {
-        printf('%s %d', $auth->getMessage(), $auth->getCode());
-        exit();
     }
   }
 }

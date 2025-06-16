@@ -13,6 +13,7 @@ namespace App\Actions;
 
 use App\Models\Post;
 use App\Models\Revision;
+use Exception;
 
 /**
  * @package GiGaCMS\Revisions
@@ -24,16 +25,16 @@ class RevisionAction
   /**
    * Create an instance of the Revision model class.
    *
-   * @var object
+   * @var Revision
    */
-  protected object $revision;
+  protected Revision $revision;
 
   /**
    * Create an instance of the Post model class.
    *
-   * @var object
+   * @var Post
    */
-  protected object $post;
+  protected Post $post;
 
   /**
    * Constructor.
@@ -50,13 +51,16 @@ class RevisionAction
    * @param array $data
    * @param integer $post_id
    * @return void
+   * @throws Exception
    */
   public function store(array $data, int $post_id): void
   {
     $current = $this->revision->findLastOne('post_id', $post_id);
+
     if ($current) {
       $count = $current->revision_number + 1;
-      if (str_word_count($data['post_content']) !== str_word_count($current->post_content) || $data['post_title'] !== $current->post_title) {
+      if (str_word_count($data['post_content']) !== str_word_count($current->post_content)
+        || $data['post_title'] !== $current->post_title) {
         $this->revision->insert([
           'post_id' => $post_id,
           'post_content' => $data['post_content'],
@@ -83,20 +87,21 @@ class RevisionAction
   }
 
   /**
-   * Get a specific version of a post. 
+   * Get a specific version of a post.
    *
    * @param integer $id
-   * @throws \Exception
-   * @return void
+   * @return mixed
+   *@throws Exception
    */
-  public function getRevision(int $id)
+  public function getRevision(int $id): mixed
   {
     try {
       if (! $this->revision->findById($id)) {
-        throw new \Exception('This version of this post not has been found');
+        throw new Exception('This version of this post not has been found');
       }
+
       return $this->revision->findById($id);
-    } catch (\Exception $exc) {
+    } catch (Exception $exc) {
       printf('%s', $exc->getMessage());
     }
   }

@@ -11,9 +11,11 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Exception;
 use Src\Auth;
 use Src\Controller;
 use App\Models\Post;
+use Src\View;
 
 /**
  * @package GiGaCMS/Dashboard
@@ -33,9 +35,10 @@ class DashboardController extends Controller
   /**
    * Display a listing of activities of the users.
    *
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function index(): mixed
+  public function index(): View
   {
     return view('dashboard/index', [
       'posts' => $this->posts->findLatest('user_id', Auth::id(), 6),

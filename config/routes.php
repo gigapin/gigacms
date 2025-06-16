@@ -17,7 +17,7 @@ use App\Controllers\TestsController;
 use App\Controllers\Admin\TagController;
 use App\Controllers\Admin\MenuController;
 use App\Controllers\Admin\PostController;
-use App\Controllers\Admin\RolePermission;
+use App\Controllers\Admin\RolePermissionController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\LibraryController;

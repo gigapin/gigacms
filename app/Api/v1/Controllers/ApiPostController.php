@@ -1,7 +1,17 @@
-<?php 
+<?php
+/*
+ * This file is part of the GiGaCMS package.
+ *
+ * (c) Giuseppe Galari <gigaprog@proton.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+declare(strict_types=1);
 
 namespace App\Api\v1\Controllers;
 
+use Exception;
 use Src\Controller;
 use App\Models\Post;
 use App\Models\Metadata;
@@ -12,12 +22,30 @@ use App\Models\Setting;
 
 class ApiPostController extends Controller
 {
-  protected object $response;
-  protected object $posts;
-  protected object $metadata;
-  protected object $menu_items;
-  protected object $categories;
-  protected object $settings;
+  /**
+   * @var Response
+   */
+  protected Response $response;
+  /**
+   * @var Post
+   */
+  protected Post $posts;
+  /**
+   * @var Metadata
+   */
+  protected Metadata $metadata;
+  /**
+   * @var MenuItem
+   */
+  protected MenuItem $menu_items;
+  /**
+   * @var Category
+   */
+  protected Category $categories;
+  /**
+   * @var Setting
+   */
+  protected Setting $settings;
 
   public function __construct()
   {
@@ -29,12 +57,17 @@ class ApiPostController extends Controller
     $this->settings = new Setting('settings');
   }
 
-  public function index()
+  /**
+   * @return void
+   * @throws Exception
+   */
+  public function index(): void
   {
     $this->response->setSuccess(true);
     $this->response->setHttpStatusCode(200);
     $this->response->toCache(true);
     $this->response->addMessage('Posts displayed successfully');
+
     $this->response->setData([
       'posts' => $this->postStatus(),
       'menu_items' => $this->menu_items->findAll(),
@@ -46,12 +79,17 @@ class ApiPostController extends Controller
     $this->response->send();
   }
 
-  public function blog() 
+  /**
+   * @return void
+   * @throws Exception
+   */
+  public function blog(): void
   {
     $this->response->setSuccess(true);
     $this->response->setHttpStatusCode(200);
     $this->response->toCache(true);
     $this->response->addMessage('Posts displayed successfully');
+
     $this->response->setData([
       'posts' => $this->latestPosts(),
       'menu_items' => $this->menu_items->findAll(),
@@ -63,30 +101,46 @@ class ApiPostController extends Controller
     $this->response->send();
   }
 
-  protected function latestPosts()
+  /**
+   * @throws Exception
+   */
+  protected function latestPosts(): string|bool
   {
     if ($this->postStatus() !== false) {
       return $this->posts->findLatest('post_status', 'published', 5);
     }
+
+    return false;
   }
 
-  protected function postStatus()
+  /**
+   * @throws Exception
+   */
+  protected function postStatus(): string|bool
   {
     if ($this->settings->findWhere('option_name', 'post_status')->option_value === 'published') {
       return $this->posts->findAllWhere('post_status', 'published');
     }
+
     return false;
   }
 
-  protected function showCategories()
+  /**
+   * @throws Exception
+   */
+  protected function showCategories(): string|bool
   {
     if ($this->settings->findWhere('option_name', 'categories')->option_value !== null) {
       return $this->categories->findAll();
     }
+
     return false;
   }
 
-  public function show(string $slug)
+  /**
+   * @throws Exception
+   */
+  public function show(string $slug): void
   {
     if ($this->posts->findWhereAnd('post_name', $slug, 'post_status', 'published')) {
       $this->response->setSuccess(true);

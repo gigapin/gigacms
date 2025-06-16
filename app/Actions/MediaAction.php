@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\Media;
+use Exception;
+use Random\RandomException;
 use Src\Auth;
 use Src\UploadFile;
 use Src\Http\Request;
@@ -63,21 +65,23 @@ class MediaAction
   }
 
   /**
-   * Get specific resource. 
+   * Get specific resource.
    *
    * @param string $field
    * @param integer $id
    * @return mixed
+   * @throws Exception
    */
   public function getWhere(string $field, int $id): mixed
   {
     return $this->media->findWhere($field, $id);
   }
-  
+
   /**
    * Set random string to replace image name.
-   * 
+   *
    * @return string
+   * @throws RandomException
    */
   private function setImageName(): string
   {
@@ -91,7 +95,13 @@ class MediaAction
    */
   public function getStoragePath(): string
   {
-    return 'http://' . $this->request->site() . "uploads/";
+    $url = $this->request->site() . "uploads/";
+
+    if ($_ENV['APP_ENV'] == 'development') {
+      return "http://" . $url;
+    } else {
+      return "https://" . $url;
+    }
   }
 
   /**
@@ -99,6 +109,7 @@ class MediaAction
    *
    * @param integer $postId
    * @return void
+   * @throws Exception
    */
   public function insertFile(int $postId): void
   {
@@ -117,10 +128,11 @@ class MediaAction
   }
 
   /**
-   * Updatefile uploaded.
+   * Update file uploaded.
    *
    * @param integer $postId
    * @return void
+   * @throws Exception
    */
   public function updateFile(int $postId): void
   {

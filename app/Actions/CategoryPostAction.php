@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use Exception;
 use Src\Http\Request;
 use App\Models\CategoryPost;
 
@@ -23,10 +24,10 @@ use App\Models\CategoryPost;
 class CategoryPostAction
 {
   /** 
-   * @var object 
+   * @var CategoryPost
    * @access private
    */
-  private object $categoryPost;
+  private CategoryPost $categoryPost;
 
   /**
    * Constructor.
@@ -41,6 +42,7 @@ class CategoryPostAction
    *
    * @param object $postId
    * @return void
+   * @throws Exception
    */
   public function insertCategoryPost(object $postId): void
   {
@@ -55,6 +57,7 @@ class CategoryPostAction
    *
    * @param object $postId
    * @return void
+   * @throws Exception
    */
   public function updateCategoryPost(object $postId): void
   {
@@ -89,10 +92,11 @@ class CategoryPostAction
    * Delete record of a post linked to a category.
    *
    * @param integer $id
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function deleteCategoryPost(int $id): mixed
+  public function deleteCategoryPost(int $id): void
   {
-    return $this->categoryPost->delete($this->categoryPost->findWhere('post_id', $id)->id);
+    $this->categoryPost->delete($this->categoryPost->findWhere('post_id', $id)->id);
   }
 }

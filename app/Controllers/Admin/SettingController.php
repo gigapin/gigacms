@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use App\Models\Access;
+use App\Models\Status;
+use Exception;
 use Src\CSRFToken;
 use Src\Controller;
 use App\Models\User;
@@ -19,6 +22,7 @@ use App\Models\Setting;
 use Src\Session\Session;
 use Src\Exceptions\AuthException;
 use Src\Http\Request;
+use Src\View;
 
 /**
  * 
@@ -30,11 +34,10 @@ use Src\Http\Request;
 class SettingController extends Controller
 {
 
-  /** @var object */
-  protected object $access;
-  protected object $status;
-  protected object $user;
-  protected object $setting;
+  protected Access $access;
+  protected Status $status;
+  protected User $user;
+  protected Setting $setting;
 
   /**
    * Listing of options setting available
@@ -64,17 +67,21 @@ class SettingController extends Controller
     $this->setting = new Setting('settings');
   }
 
-  public function cleanCache()
+  /**
+   * @throws Exception
+   */
+  public function cleanCache(): void
   {
-    return Session::remove('errors');
+    Session::remove('errors');
   }
 
   /**
    * Display a listings of settings to manage.
    *
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function index(): mixed
+  public function index(): View
   {
     $role = $this->user->findWhere('username', Session::get('user'));
    
@@ -96,11 +103,13 @@ class SettingController extends Controller
   /**
    * Storing options changed
    *
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function store(): mixed
+  public function store(): void
   {
     $data = array();
+
     if (is_null($this->setting->findAll())) {
       foreach (Request::multiPost('option_name') as $option_name => $option_value) {
         $this->setting->insert([
@@ -130,6 +139,6 @@ class SettingController extends Controller
       }
     }
 
-    return redirect('settings');
+    redirect('settings');
   }
 }

@@ -23,7 +23,7 @@ use Src\Http\Redirect;
  */
 class HomeController extends Controller
 {
-  public function index()
+  public function index(): void
   {
     Redirect::to('login');
   }

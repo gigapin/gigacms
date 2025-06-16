@@ -12,15 +12,16 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Exception;
 use Src\Auth;
 use Src\CSRFToken;
 use Src\Controller;
 use App\Models\Role;
 use App\Models\User;
-use Src\Http\Request;
 use Src\Session\Session;
 use App\Models\DefaultRolePermission;
-use App\Models\RolePermission as Permission;
+use App\Models\RolePermission;
+use Src\View;
 
 /**
  * 
@@ -29,41 +30,41 @@ use App\Models\RolePermission as Permission;
  * @version 1.0.0
  * @see Controller
  */
-class RolePermission extends Controller
+class RolePermissionController extends Controller
 {
 
   /**
    * Create an instance of the Permission model class.
    * 
    * @access protected
-   * @var object
+   * @var RolePermission
    */
-  protected object $permission;
+  protected RolePermission $permission;
 
   /**
    * Create an instance of the DefaultRolePermission model class.
    * 
    * @access protected
-   * @var object
+   * @var DefaultRolePermission
    */
-  protected object $default_permission;
+  protected DefaultRolePermission $default_permission;
 
   /**
    * Create an instance of the Role model class.
    * 
    * @access protected
-   * @var object
+   * @var Role
    */
-  protected object $role;
+  protected Role $role;
 
-  protected object $user;
+  protected User $user;
 
   /**
    * Constructor
    */
   public function __construct()
   {
-    $this->permission = new Permission('role_permissions');
+    $this->permission = new RolePermission('role_permissions');
     $this->default_permission = new DefaultRolePermission('default_role_permissions');
     $this->role = new Role('roles');
     $this->user = new User('users');
@@ -98,9 +99,9 @@ class RolePermission extends Controller
    * show buttons to create a new roles and 
    * other buttons to edit or delete themselves.
    *
-   * @return mixed
+   * @return View
    */
-  public function index(): mixed
+  public function index(): View
   {
     return view('role-permissions/index', [
       'permissions' => $this->permission->findAll(),
@@ -113,69 +114,73 @@ class RolePermission extends Controller
   /**
    * Change permissions for a specific role.
    *
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function create(): mixed
+  public function create(): void
   {
     $this->permission->insert($this->getPermission());
     Session::setFlashMessage('FLASH_SUCCESS', 'Role created successfully');
 
-    return redirect('role-permissions');
+    redirect('role-permissions');
   }
 
   /**
    * Modify the name of a specific role.
    *
    * @param integer $id
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function change(int $id): mixed 
+  public function change(int $id): void
   {
     $getRole = $this->permission->findById($id);
     $setRole = $this->role->findWhere('id', $getRole->role_id);
+
     $this->role->update($setRole->id, [
       'name_role' => ucfirst($this->post('alias_name_role')),
       'alias_name_role' => slug(strtolower($this->post('alias_name_role'))),
       'created_by' => Auth::id()
     ]);
 
-    return redirect('role-permissions');
+    redirect('role-permissions');
   }
 
   /**
    * Change the permissions for a specific role.
    *
    * @param integer $id
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function update(int $id): mixed
+  public function update(int $id): void
   {
     $this->permission->update($id, $this->getPermission());
     Session::setFlashMessage('FLASH_SUCCESS', 'Role updated successfully');
 
-    return redirect('role-permissions');
+    redirect('role-permissions');
   }
 
   /**
    * Delete a specific role.
    *
    * @param integer $id
-   * @throws \Exception
-   * @return mixed
+   * @return void
+   *@throws Exception
    */
-  public function delete(int $id): mixed
+  public function delete(int $id): void
   {
     $getRole = $this->permission->findById($id);
     
     try {
       if (! $getRole) {
-        throw new \Exception('Role Not Found');
+        throw new Exception('Role Not Found');
       }
       $this->role->delete($getRole->role_id);
       $this->permission->delete($id);
 
-      return redirect('role-permissions');
-    } catch (\Exception $exc) {
+      redirect('role-permissions');
+    } catch (Exception $exc) {
       printf('%s', $exc->getMessage());
     }
   }
@@ -184,12 +189,14 @@ class RolePermission extends Controller
    * Restore default roles and their permissions.
    * Delete roles added.
    *
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function restoreDefaultPermission(): mixed
+  public function restoreDefaultPermission(): View
   {
     $default = $this->default_permission->findAll();
     $array_default = array();
+
     foreach ($default as $row) {
       $array_default[] = $row->role_id;
     }

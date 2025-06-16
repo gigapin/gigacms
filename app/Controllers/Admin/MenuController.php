@@ -11,10 +11,12 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Exception;
 use Src\Auth;
 use Src\Controller;
 use App\Models\Menu;
 use Src\Session\Session;
+use Src\View;
 
 /**
  * @package GiGaCMS/Menu
@@ -42,9 +44,10 @@ class MenuController extends Controller
   /**
    * Display a listing of menus.
    *
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function index(): mixed
+  public function index(): View
   {
     return view('menus/index', [
       'menus' => $this->menu->findAllWhere('created_by', Auth::id()),
@@ -55,9 +58,9 @@ class MenuController extends Controller
   /**
    * Display a form to create a new menu.
    *
-   * @return mixed
+   * @return View
    */
-  public function create(): mixed
+  public function create(): View
   {
     return view('menus/create');
   }
@@ -65,28 +68,32 @@ class MenuController extends Controller
   /**
    * Storing a new menu.
    *
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function store(): mixed
+  public function store(): void
   {
     $this->menu->insert([
       'name' => $this->post('name'),
-      'description' => $this->post('description') !== '' ? $this->post('description') : null,
+      'description' => $this->post('description') !== ''
+        ? $this->post('description')
+        : null,
       'created_by' => Auth::id(),
       'created_at' => setDate()
     ]);
     Session::setFlashMessage('FLASH_SUCCESS', 'Menu added successfully');
     
-    return redirect('menus');
+    redirect('menus');
   }
 
   /**
    * Display a form to edit a specific menu.
    *
    * @param integer $id
-   * @return mixed
+   * @return View
+   * @throws Exception
    */
-  public function edit(int $id): mixed
+  public function edit(int $id): View
   {
     return view('menus/edit', [
       'menu' => $this->menu->findById($id)
@@ -97,14 +104,13 @@ class MenuController extends Controller
    * Storing a menu updated.
    *
    * @param integer $id
-   * @throws \Exception
-   * @return mixed
+   * @return void
    */
-  public function update(int $id): mixed
+  public function update(int $id): void
   {
     try {
       if (! $this->menu->findById($id)) {
-        throw new \Exception('Resource Not Found');
+        throw new Exception('Resource Not Found');
       }
       $this->menu->update($id, [
         'name' => $this->post('name'),
@@ -113,8 +119,8 @@ class MenuController extends Controller
       ]);
       Session::setFlashMessage('FLASH_SUCCESS', 'Menu updated successfully');
 
-      return redirect('menus/edit/' . $id);
-    } catch (\Exception $exc) {
+      redirect('menus/edit/' . $id);
+    } catch (Exception $exc) {
       printf('%s', $exc->getMessage());
     }
   }
@@ -123,20 +129,21 @@ class MenuController extends Controller
    * Delete a specific menu.
    *
    * @param integer $id
-   * @throws \Exception
-   * @return mixed
+   * @return void
+   * @throws Exception
    */
-  public function delete(int $id): mixed
+  public function delete(int $id): void
   {
     $menu = $this->menu->findById($id);
+
     try {
       if (! $menu) {
-        throw new \Exception('Resource Not Found');
+        throw new Exception('Resource Not Found');
       }
       $this->menu->delete($id);
 
-      return redirect('menus');
-    } catch (\Exception $exc) {
+      redirect('menus');
+    } catch (Exception $exc) {
       printf('%s', $exc->getMessage());
     }
   }

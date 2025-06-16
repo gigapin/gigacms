@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\Admin;
 
+use Exception;
 use Src\Auth;
 use Src\CSRFToken;
 use Src\Controller;
@@ -18,6 +19,7 @@ use Src\Http\Request;
 use App\Models\Category;
 use Src\Session\Session;
 use Src\Validation\ValidateRequest;
+use Src\View;
 
 /**
  * @package GiGaCMS/Category
@@ -31,7 +33,7 @@ class CategoryController extends Controller
 	 * @access private
 	 * @var object
 	 */
-	private object $category;
+	private Category $category;
 
 	/**
 	 * Constructor.
@@ -41,8 +43,11 @@ class CategoryController extends Controller
 		$this->category = new Category('categories');
 	}
 
-	private function getData()
-	{
+  /**
+   * @throws Exception
+   */
+  private function getData(): array
+  {
 		return [
 			'user_id' => Auth::id(),
 			'category_name' => $this->post('category_name'),
@@ -71,22 +76,23 @@ class CategoryController extends Controller
 	/**
 	 * Display a listing of the resources.	
 	 *
-	 * @return mixed
-	 */
-	public function index(): mixed
-	{
+	 * @return View
+   */
+	public function index(): View
+  {
 		return view('categories/index', [
 			'categories' => $this->category->findAll(),
 		]);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return mixed
-	 */
-	public function create(): mixed
-	{
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return View
+   * @throws Exception
+   */
+	public function create(): View
+  {
 		return view('categories/create', [
 			'token' => CSRFToken::token(),
 			'old' => Session::get('data-form'),
@@ -94,15 +100,16 @@ class CategoryController extends Controller
 		]);
 	}
 
-	/**
-	 * Store a newly created resource in storing.
-	 *
-	 * @return mixed
-	 */
-	public function store(): mixed
-	{
+  /**
+   * Store a newly created resource in storing.
+   *
+   * @return void
+   * @throws Exception
+   */
+	public function store(): void
+  {
 		if (! is_null(Request::validate($this->setValidation()))) {
-			return ValidateRequest::storingSession($this->setValidation(), 'categories/create');
+			ValidateRequest::storingSession($this->setValidation(), 'categories/create');
 		}
 		ValidateRequest::unsetSession();
 
@@ -110,47 +117,51 @@ class CategoryController extends Controller
 
 		Session::setFlashMessage('FLASH_SUCCESS', 'Category created successfully');
 
-		return redirect('categories');
+		redirect('categories');
 	}
 
 	/**
 	 * Display form for editing the specified resource. 
 	 *
 	 * @param string $slug
-	 * @return mixed
-	 * @throws Exception
+	 * @return int|View
+   * @throws Exception
 	 */
-	public function edit(string $slug): mixed
-	{
+	public function edit(string $slug): int|View
+  {
 		$categoryId = $this->category->findWhere('category_slug', $slug);
 		
 		try {
 			if(! $categoryId) {
-				throw new \Exception('Category not found');
+				throw new Exception('Category not found');
 			}
 
 			return view('categories/edit', [
-				'category' => $this->category->findWhereAnd('category_slug', $slug, 'user_id', Auth::id()),
+				'category' => $this->category
+            ->findWhereAnd('category_slug', $slug, 'user_id', Auth::id()),
 				'token' => CSRFToken::token(),
 				'categories' => $this->category->findAll(),
 				
 			]);
-		} catch(\Exception $exc) {
-			printf("%s", $exc->getMessage());
+		} catch(Exception $exc) {
+			return printf("%s", $exc->getMessage());
 		}
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param integer $id
-	 * @return mixed
-	 */
-	public function update(int $id): mixed
-	{
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param integer $id
+   * @return void
+   * @throws Exception
+   */
+	public function update(int $id): void
+  {
 		$updatedId = $this->category->findById($id);
 		if (! is_null(Request::validate($this->setValidation()))) {
-			return ValidateRequest::storingSession($this->setValidation(), 'categories/edit/' . $updatedId->category_slug);
+			ValidateRequest::storingSession(
+        $this->setValidation(), 'categories/edit/' . $updatedId->category_slug
+      );
 		}
 		ValidateRequest::unsetSession();
 		
@@ -158,26 +169,25 @@ class CategoryController extends Controller
 		$updatedCategory = $this->category->findById($id);
 		Session::setFlashMessage('FLASH_SUCCESS', 'Category updated successfully');
 
-		return redirect('categories/edit/' . $updatedCategory->category_slug);
+		redirect('categories/edit/' . $updatedCategory->category_slug);
 	}
 
-	/**
-	 * Delete the specified resource.
-	 *
-	 * @param integer $id
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function delete(int $id): mixed
-	{
+  /**
+   * Delete the specified resource.
+   *
+   * @param integer $id
+   * @return void
+   */
+	public function delete(int $id): void
+  {
 		try{
 			if(! $this->category->findById($id)) {
-				throw new \Exception('Category not found');
+				throw new Exception('Category not found');
 			}
 			$this->category->delete($id);
 
-			return redirect('categories');
-		} catch(\Exception $exc) {
+			redirect('categories');
+		} catch(Exception $exc) {
 			printf("%s", $exc->getMessage());
 		}
 	}

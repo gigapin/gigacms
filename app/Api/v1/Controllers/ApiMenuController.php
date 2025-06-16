@@ -1,4 +1,13 @@
-<?php 
+<?php
+/*
+ * This file is part of the GiGaCMS package.
+ *
+ * (c) Giuseppe Galari <gigaprog@proton.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+declare(strict_types=1);
 
 namespace App\Api\v1\Controllers;
 
@@ -8,8 +17,15 @@ use Src\Controller;
 
 class ApiMenuController extends Controller
 {
-  protected object $menu;
-  protected object $response;
+  /**
+   * @var Menu
+   */
+  protected Menu $menu;
+
+  /**
+   * @var Response
+   */
+  protected Response $response;
 
   public function __construct()
   {
@@ -17,7 +33,10 @@ class ApiMenuController extends Controller
     $this->response = new Response();
   }
 
-  public function index()
+  /**
+   * @return void
+   */
+  public function index(): void
   {
     $this->response->setData([
       'menu' => $this->menu->findAll()

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\Metadata;
+use Exception;
 use Src\Http\Request;
 
 /**
@@ -41,16 +42,11 @@ class MetaDataAction
    *
    * @param object $postId
    * @return void
+   * @throws Exception
    */
   public function insertMetaData(object $postId): void
   {
-    $this->metadata->insert([
-      'meta_description' => Request::post('meta_description') !== "" ? trim(Request::post('meta_description')) : null,
-      'keywords' => Request::post('keywords') !== '' ? trim(Request::post('keywords')) : null,
-      'robots' => Request::post('robots') !== '' ? Request::post('robots') : null,
-      'author' => Request::post('author') !== '' ? trim(Request::post('author')) : null,
-      'post_id' => $postId->id, 
-    ]);
+    $this->getMetadata($postId);
   }
 
   /**
@@ -58,6 +54,7 @@ class MetaDataAction
    *
    * @param object $postId
    * @return void
+   * @throws Exception
    */
   public function updateMetaData(object $postId): void
   {
@@ -70,13 +67,7 @@ class MetaDataAction
         'post_id' => $postId->id, 
       ]);
     } else {
-      $this->metadata->insert([
-        'meta_description' => Request::post('meta_description') !== "" ? trim(Request::post('meta_description')) : null,
-        'keywords' => Request::post('keywords') !== '' ? trim(Request::post('keywords')) : null,
-        'robots' => Request::post('robots') !== '' ? Request::post('robots') : null,
-        'author' => Request::post('author') !== '' ? trim(Request::post('author')) : null,
-        'post_id' => $postId->id, 
-      ]);
+      $this->getMetadata($postId);
     }
   }
 
@@ -85,13 +76,44 @@ class MetaDataAction
    *
    * @param integer $postId
    * @return mixed
+   * @throws Exception
    */
   public function getMetadataWhere(int $postId): mixed
   {
-    $metadata = $this->metadata->findWhere('post_id', $postId); 
+    $metadata = $this->metadata->findWhere('post_id', $postId);
+
     if (! $metadata) {
       return null;
     }
+
     return $metadata;
+  }
+
+  /**
+   * @param object $postId
+   * @return void
+   * @throws Exception
+   */
+  public function getMetadata(object $postId): void
+  {
+    $this->metadata->insert([
+      'meta_description' =>
+        Request::post('meta_description') !== ""
+          ? trim(Request::post('meta_description'))
+          : null,
+      'keywords' =>
+        Request::post('keywords') !== ''
+          ? trim(Request::post('keywords'))
+          : null,
+      'robots' =>
+        Request::post('robots') !== ''
+          ? Request::post('robots')
+          : null,
+      'author' =>
+        Request::post('author') !== ''
+          ? trim(Request::post('author'))
+          : null,
+      'post_id' => $postId->id,
+    ]);
   }
 }
