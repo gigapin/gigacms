@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77cd5ae81248128eff917664eaef1dc3",
+    "content-hash": "3dd3899e0f9a437bb2e8663b1fc140b4",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2373,16 +2373,16 @@
         },
         {
             "name": "tinymce/tinymce",
-            "version": "6.8.6",
+            "version": "7.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "10dd79539ecc28855eb624eb80fcaa151d53a8cb"
+                "reference": "3d6219296c9a92c87337bb38fb502a469ac1167f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/10dd79539ecc28855eb624eb80fcaa151d53a8cb",
-                "reference": "10dd79539ecc28855eb624eb80fcaa151d53a8cb",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/3d6219296c9a92c87337bb38fb502a469ac1167f",
+                "reference": "3d6219296c9a92c87337bb38fb502a469ac1167f",
                 "shasum": ""
             },
             "type": "component",
@@ -2407,7 +2407,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT-only"
+                "GPL-2.0-or-later"
             ],
             "description": "Web based JavaScript HTML WYSIWYG editor control.",
             "homepage": "https://www.tiny.cloud/",
@@ -2426,9 +2426,9 @@
                 "wysiwyg"
             ],
             "support": {
-                "source": "https://github.com/tinymce/tinymce-dist/tree/6.8.6"
+                "source": "https://github.com/tinymce/tinymce-dist/tree/7.9.1"
             },
-            "time": "2025-05-29T02:36:52+00:00"
+            "time": "2025-05-29T02:22:36+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -4202,7 +4202,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-openssl": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
