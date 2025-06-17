@@ -21,12 +21,13 @@ use Src\QueryBuilder;
  */
 class Comment extends QueryBuilder
 {
-    /**
-     * Display how many comments have been created for the specified post.
-     *
-     * @param integer $postId
-     * @return int
-     */
+  /**
+   * Display how many comments have been created for the specified post.
+   *
+   * @param integer $postId
+   * @return int
+   * @throws \Exception
+   */
     public function countComments(int $postId): int
     {
         $comments = $this->findAllWhere('post_id', $postId);

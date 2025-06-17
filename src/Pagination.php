@@ -26,14 +26,16 @@ class Pagination
    *
    * @param array $array
    * @param integer $length
-   * @return mixed
+   * @return array
    */
-  public function paginate(array $array, int $length): mixed
+  public function paginate(array $array, int $length): array
   {
     if (Request::get('page') !== null) {
       $offset = $length * Request::get('page');
 
       return array_slice($array, $offset, $length);
     }
+
+    return [];
   }
 }

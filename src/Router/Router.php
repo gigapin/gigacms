@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Src\Router;
 
-use \Exception;
+use Exception;
 use Src\Http\Request;
 
 /**
@@ -44,9 +44,9 @@ class Router implements RouterInterface
    * Create a new instance of Request class.
    *
    * @access protected
-   * @var object
+   * @var Request
    */
-  protected object $request;
+  protected Request $request;
 
   /**
    * Constructor.
@@ -80,9 +80,9 @@ class Router implements RouterInterface
    *
    * @param string $path
    * @param array $params
-   * @return mixed
+   * @return array|null
    */
-  public function get(string $path, array $params): mixed
+  public function get(string $path, array $params): ?array
   {
     if ($this->request->method() === 'get') {
       return $this->map($path, $params);
@@ -96,9 +96,9 @@ class Router implements RouterInterface
    *
    * @param string $path
    * @param array $params
-   * @return mixed
+   * @return array|null
    */
-  public function post(string $path, array $params): mixed
+  public function post(string $path, array $params): ?array
   {
     if ($this->request->method() === 'post') {
       return $this->map($path, $params);
@@ -112,12 +112,12 @@ class Router implements RouterInterface
    *
    * @param string $path
    * @param array $params
-   * @return mixed
+   * @return array|null
    */
-  public function put(string $path, array $params): mixed
+  public function put(string $path, array $params): ?array
   {
     if ($this->request->method() === 'put') {
-      $this->map($path, $params);
+      return $this->map($path, $params);
     }
 
     return null;
@@ -128,12 +128,12 @@ class Router implements RouterInterface
    *
    * @param string $path
    * @param array $params
-   * @return mixed
+   * @return array|null
    */
-  public function patch(string $path, array $params): mixed
+  public function patch(string $path, array $params): ?array
   {
     if ($this->request->method() === 'patch') {
-      $this->map($path, $params);
+      return $this->map($path, $params);
     }
 
     return null;
@@ -144,35 +144,42 @@ class Router implements RouterInterface
    *
    * @param string $path
    * @param array $params
-   * @return mixed
+   * @return array|null
    */
-  public function delete(string $path, array $params): mixed
+  public function delete(string $path, array $params): ?array
   {
     if ($this->request->method() === 'delete') {
-      $this->map($path, $params);
+      return $this->map($path, $params);
     }
     
     return null;
   }
 
-  public function option(string $path, array $params)
+  /**
+   * @param string $path
+   * @param array $params
+   * @return array|null
+   */
+  public function option(string $path, array $params): ?array
   {
     if ($this->request->method() === 'options') {
       header('Access-Control-Allow-Methods: POST, OPTIONS');
       header('Access-Control-Allow-Headers: Content-Type');
       header('Access-Control-max-Age: 86400');
-      $this->map($path, $params);
+      return $this->map($path, $params);
     }
+
+    return null;
   }
 
   /**
    * @inheritDoc
    *
    * @param string $url
-   * @return mixed
+   * @return null
    * @throws Exception
    */
-  public function match(string $url): mixed
+  public function match(string $url): null
   {
     $paramValue = null;
     
@@ -187,14 +194,17 @@ class Router implements RouterInterface
           } else {
             $action = $this->routes[$route][0][1];
           }
+
           if (isset($matches[1])) {
             $paramValue = $matches[1];
           }
           
-          return $this->dispatch($controller, $action, $paramValue);
+          $this->dispatch($controller, $action, $paramValue);
         }
       }
     }
+
+    return null;
   }
 
   /**
@@ -209,14 +219,14 @@ class Router implements RouterInterface
   {
     if (class_exists($controller)) {
       $obj = new $controller();
+
       if (method_exists($obj, $action)) {
         call_user_func_array([$obj, $action], [$params]);
       } else {
-        throw new \Exception("Method not found");
+        throw new Exception("Method not found");
       }
     } else {
-      dd($controller);
-      throw new \Exception("Class not found");
+      throw new Exception("Class not found");
     }
   }
 }

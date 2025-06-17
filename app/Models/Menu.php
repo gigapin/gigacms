@@ -22,6 +22,9 @@ use Src\QueryBuilder;
  */
 class Menu extends QueryBuilder
 {
+  /**
+   * @throws \Exception
+   */
   public function user()
   {
     $query = "SELECT menus.created_by, users.username 

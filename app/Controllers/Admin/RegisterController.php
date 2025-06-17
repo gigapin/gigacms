@@ -78,7 +78,7 @@ class RegisterController extends Controller
 		]);
 
 		if ($this->post('password') !== $this->post('password-confirm')) {
-			$errors[] = "Passoword not matched!";
+			$errors[] = "Password not matched!";
 		}
 
 		if ($errors) {

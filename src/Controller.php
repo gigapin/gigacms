@@ -40,13 +40,15 @@ abstract class Controller
   /**
    * Instance of the Request class.
    *
-   * @return Request
+   * @return Request|null
    */
-  public function request(): Request
+  public function request(): Request|null
   {
     if (class_exists('Src\Http\Request')) {
       return new Request;
     }
+
+    return null;
   }
 
   /**
@@ -85,9 +87,9 @@ abstract class Controller
   /**
    * Create an instance of Status class.
    *
-   * @return mixed
+   * @return Status
    */
-  public function status(): mixed
+  public function status(): Status
   {
     return new Status('status');
   }
@@ -95,9 +97,9 @@ abstract class Controller
   /**
    * Create an instance of Access class.
    *
-   * @return mixed
+   * @return Access
    */
-  public function access(): mixed
+  public function access(): Access
   {
     return new Access('access');
   }

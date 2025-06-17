@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace Src\Authorization;
 
+use Exception;
+use Src\Exceptions\AuthException;
+
 /**
  * @package GiGaFlow\Authorization
  * @author Giuseppe Galari <gigaprog@proton.me>
@@ -23,9 +26,9 @@ interface AuthorizationInterface
    * if URL is different from login or register 
    * raise an exception.
    *
-   * @throws \Exception
+   * @throws Exception
    * @throws AuthException
    * @return mixed
    */
-  public function init();
+  public function init(): mixed;
 }

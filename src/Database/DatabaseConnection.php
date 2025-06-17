@@ -29,7 +29,7 @@ class DatabaseConnection implements DatabaseConnectionInterface
    * 
    * @var PDO|null 
    */
-  protected ?\PDO $db = null;
+  protected ?PDO $db = null;
 
   /** 
    * Set PDO error attributes.
@@ -46,9 +46,8 @@ class DatabaseConnection implements DatabaseConnectionInterface
   /**
    * @inheritDoc
    *
-   * @return \PDO
-   * @throws \Exception
-   * @throws \DatabaseConnectionException
+   * @return PDO
+   * @throws Exception
    */
   public function open(): PDO
   {
@@ -59,35 +58,30 @@ class DatabaseConnection implements DatabaseConnectionInterface
     $config = include __DIR__ . "/../../config/database.php";
 
     try {
-      switch ($this->db === null) {
-        case $config['connection'] === 'PGSQL':
-          $this->db = new \PDO(
-            $this->postgreSQLConnection($config),
-            $config['DB_DRIVERS']['PGSQL']['DB_USER'],
-            $config['DB_DRIVERS']['PGSQL']['DB_PASS'],
-            $this->attributes
-          );
-          break;
-        case $config['connection'] === 'MYSQL':
-          $this->db = new PDO(
-            $this->mysqlConnection($config),
-            $config['DB_DRIVERS']['MYSQL']['DB_USER'],
-            $config['DB_DRIVERS']['MYSQL']['DB_PASS'],
-            $this->attributes
-          );
-          break;
-        case $config['connection'] === 'SQLITE':
-          $this->db = new PDO(
-            $this->sqliteConnection($config)
-          );
-          break;
-        default:
-          throw new DatabaseConnectionException("Database driver not supported");
-      }
+      $this->db = match ($this->db === null) {
+        $config['connection'] === 'PGSQL' => new PDO(
+          $this->postgreSQLConnection($config),
+          $config['DB_DRIVERS']['PGSQL']['DB_USER'],
+          $config['DB_DRIVERS']['PGSQL']['DB_PASS'],
+          $this->attributes
+        ),
+        $config['connection'] === 'MYSQL' => new PDO(
+          $this->mysqlConnection($config),
+          $config['DB_DRIVERS']['MYSQL']['DB_USER'],
+          $config['DB_DRIVERS']['MYSQL']['DB_PASS'],
+          $this->attributes
+        ),
+        $config['connection'] === 'SQLITE' => new PDO(
+          $this->sqliteConnection($config)
+        ),
+        default => throw new DatabaseConnectionException("Database driver not supported"),
+      };
 
       return $this->db;
     } catch (DatabaseConnectionException $exception) {
       View::showErrorException($exception);
+    } finally {
+      return $this->db = null;
     }
   }
 
@@ -101,6 +95,7 @@ class DatabaseConnection implements DatabaseConnectionInterface
   {
     $dsn = "mysql:host=" . $config['DB_DRIVERS']['MYSQL']['DB_HOST'];
     $dsn .= ";dbname=" . $config['DB_DRIVERS']['MYSQL']['DB_NAME'];
+
     return $dsn;
   }
 
@@ -125,6 +120,7 @@ class DatabaseConnection implements DatabaseConnectionInterface
   {
     $dsn = "pgsql:host=" . $config['DB_DRIVERS']['PGSQL']['DB_HOST'];
     $dsn .= ";port=5432;dbname=" . $config['DB_DRIVERS']['PGSQL']['DB_NAME'] . ";";
+
     return $dsn;
   }
 

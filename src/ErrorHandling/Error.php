@@ -36,6 +36,7 @@ class Error
         if (!(error_reporting() & $severity)) {
             return false;
         }
+
         $errorMsg = [
             'severity' => $severity,
             'message' => $message,
@@ -60,7 +61,7 @@ class Error
      */
     public static function exceptionHandler($exception): void
     {
-        $config = include '../config/app.php';
+        $config = include __DIR__ . '/../../config/app.php';
 
         if ($config['env'] === 'development' && $exception->getCode() === 404) {
             http_response_code(404);
@@ -86,7 +87,7 @@ class Error
      * @param $exception
      * @throws Exception
      */
-    public static function errorLog($exception)
+    public static function errorLog($exception): void
     {
         $log = dirname(__DIR__) . '/../storage/logs/' . date('Y-m-d') . '.txt';
         $dir = dirname(__DIR__) . '/../storage/logs/';

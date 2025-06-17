@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Exception;
 use Src\Model;
 use Src\QueryBuilder;
 
@@ -23,6 +24,9 @@ use Src\QueryBuilder;
  */
 class Revision extends QueryBuilder
 {
+  /**
+   * @throws Exception
+   */
   public function user()
   {
     $sql = "SELECT user_id 

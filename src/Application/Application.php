@@ -81,11 +81,11 @@ class Application
         return RouterFactory::build();
     }
 
-    /**
-     * Initialize Authorization class.
-     *
-     * @return string
-     */
+  /**
+   * Initialize Authorization class.
+   *
+   * @return string|null
+   */
     protected function initAuthorization(): ?string
     {
         return AuthorizationFactory::build();

@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Src\Authorization;
 
+use UnexpectedValueException;
+
 /**
  * @package GiGaFlow\Authorization
  * @author Giuseppe Galari <gigaprog@proton.me>
@@ -21,17 +23,17 @@ class AuthorizationFactory
   /**
    * Instance and initialize Authorization class.
    *
-   * @throws \UnexpectedValueException
-   * @static
    * @return mixed
+   *@throws UnexpectedValueException|\Exception
+   * @static
    */
   public static function build(): mixed
   {
     $auth = new Authorization();
-    if (! $auth instanceof AuthorizationInterface) {
-      throw new \UnexpectedValueException('Not valid Authorization object');
-    }
-    
+    /*if (! $auth instanceof AuthorizationInterface) {
+      throw new UnexpectedValueException('Not valid Authorization object');
+    }*/
+
     return $auth->init();
   } 
 }

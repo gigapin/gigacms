@@ -28,11 +28,11 @@ interface DatabaseConnectionInterface
      */
     public function open(): PDO;
 
-    /**
-     * Close database connection
-     *
-     * @return mixed
-     */
+  /**
+   * Close database connection
+   *
+   * @return PDO|null
+   */
     public function close(): ?PDO;
 
 }

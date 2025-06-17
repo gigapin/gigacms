@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Src\Router;
 
+use Exception;
+
 /**
  * 
  * @package GiGaFlow\Router
@@ -35,7 +37,7 @@ interface RouterInterface
    *
    * @param string $controller
    * @param string $action
-   * @param array|null $params
+   * @param string|null $params
    * @return void
    */
   public function dispatch(string $controller, string $action, string|null $params): void;

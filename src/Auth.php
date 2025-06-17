@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Src;
 
+use Exception;
 use Src\Session\Session;
-use Src\QueryBuilder;
 
 /**
  * @package GiGaFlow\Auth
@@ -35,7 +35,7 @@ class Auth
 	/**
 	 * Get id from user authenticated.
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public static function id(): mixed

@@ -26,6 +26,7 @@ class CSRFToken
    *
    * @return mixed
    * @static
+   * @throws \Exception
    */
   public static function token(): mixed
   {
@@ -41,10 +42,12 @@ class CSRFToken
    * Verify if CSRF Token match token session value.
    *
    * @return void
+   * @throws \Exception
    */
   public static function verifyToken(): void
   {
-    if (! isset($_SESSION['_token']) || $_SESSION['_token'] !== self::token() || is_null($_SESSION['_token'])) {
+    if (! isset($_SESSION['_token'])
+      || $_SESSION['_token'] !== self::token()) {
       header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
       printf('%s', '<h1>403 Forbidden</h1>');
       exit();

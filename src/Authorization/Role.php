@@ -11,10 +11,6 @@ declare(strict_types=1);
 
 namespace Src\Authorization;
 
-use App\Models\User;
-use Src\Http\Request;
-use Src\Session\Session;
-
 /**
  * 
  * @package GiGaFlow\Application

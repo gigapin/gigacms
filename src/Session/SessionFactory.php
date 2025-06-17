@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Src\Session;
 
 use Src\Session\Session;
+use UnexpectedValueException;
 
 /**
  * 
@@ -23,17 +24,16 @@ use Src\Session\Session;
 class SessionFactory
 {
   /**
-   * @return mixed
+   * @return void
    * @static
-   * @throws \UnexpectedValueException
    */
-  public static function build(): mixed
+  public static function build(): void
   {
     $session = new Session();
-    if (! $session instanceof SessionInterface) {
-      throw new \UnexpectedValueException('Session class must implements session interface');
-    }
+    /*if (! $session instanceof SessionInterface) {
+      throw new UnexpectedValueException('Session class must implements session interface');
+    }*/
 
-    return $session->init();
+    $session->init();
   }
 }

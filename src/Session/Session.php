@@ -36,6 +36,7 @@ class Session implements SessionInterface
   {
     if (! Session::has($name)) {
       $_SESSION[$name] = $value;
+
       return $_SESSION[$name];
     }
     
@@ -53,6 +54,7 @@ class Session implements SessionInterface
   public static function get(string $name): mixed
   {
     if (Session::has($name)) {
+
       return $_SESSION[$name];
     }
 
@@ -66,9 +68,10 @@ class Session implements SessionInterface
    * @static
    * @return bool
    */
-  public static function has($name): bool
+  public static function has(string $name): bool
   {
     if (isset($_SESSION[$name])) {
+
       return true;
     }
 
@@ -93,16 +96,16 @@ class Session implements SessionInterface
    * @inheritDoc
    * 
    * @param string $name
-   * @throws \Exception
+   * @return bool
+   * @throws Exception
    * @static
-   * @return mixed
    */
-  public static function destroy(string $name): mixed
+  public static function destroy(string $name): bool
   {
     if (Session::has($name)) {
-      session_destroy();
+      return session_destroy();
     } else {
-      throw new \Exception("Session not exist");
+      throw new Exception("Session not exist");
     }
   }
 
@@ -122,24 +125,25 @@ class Session implements SessionInterface
 
   /**
    * Set cookie for display a flash message.
-   * 
+   *
    * @param string $type
    * @param string $message
-   * @return mixed
+   * @return void
    */
-  public static function setFlashMessage(string $type, string $message): mixed
+  public static function setFlashMessage(string $type, string $message): void
   {
-    $consts = [
+    $const = [
       'FLASH_SUCCESS',
       'FLASH_ERROR'
     ];
 
     try {
-      if (!in_array($type, $consts)) {
+      if (! in_array($type, $const)) {
         throw new Exception('Flash message type not supported');
       }
-      if (in_array($type, $consts)) {
-        return setcookie('FLASH_MESSAGE', $message, time() + 5, "/");
+
+      if (in_array($type, $const)) {
+        setcookie('FLASH_MESSAGE', $message, time() + 5, "/");
       }
     } catch (Exception $exc) {
       printf("%s", $exc->getMessage());

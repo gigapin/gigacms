@@ -34,7 +34,7 @@ class Authorization implements AuthorizationInterface
       if (is_null(Session::get('user'))) {
         if (Request::uri() !== '/login' && 
             Request::uri() !== '/register' && 
-            Request::uri() !== '/signin' && 
+            Request::uri() !== '/sign-in' &&
             Request::uri() !== '/signup' &&
             Request::uri() !== '/'
           ) {
@@ -44,7 +44,7 @@ class Authorization implements AuthorizationInterface
 
       if (Request::uri() !== '/login' && 
             Request::uri() !== '/register' && 
-            Request::uri() !== '/signin' && 
+            Request::uri() !== '/sign-in' &&
             Request::uri() !== '/signup' &&
             Request::uri() !== '/'
         ) {

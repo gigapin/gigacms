@@ -68,6 +68,7 @@ class Request
     if (array_key_exists('_token', $request)) {
       unset($request['_token']);
     }
+
     return $request;
   }
 
@@ -79,7 +80,7 @@ class Request
    */
   public function __get(string $name): mixed
   {
-    return isset($this->data[$name]) ? $this->data[$name] : null;
+    return $this->data[$name] ?? null;
   }
 
   /**
@@ -94,6 +95,8 @@ class Request
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       return filter_input(INPUT_GET, $value);
     }
+
+    return null;
   }
 
   /**
@@ -109,6 +112,8 @@ class Request
       CSRFToken::verifyToken();
       return filter_input(INPUT_POST, $value, FILTER_SANITIZE_SPECIAL_CHARS);
     }
+
+    return null;
   }
 
   /**
@@ -124,6 +129,8 @@ class Request
       CSRFToken::verifyToken();
       return filter_input(INPUT_POST, $values, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
     }
+
+    return null;
   }
 
   /**
@@ -139,6 +146,8 @@ class Request
       CSRFToken::verifyToken();
       return $_FILES[$value];
     }
+
+    return null;
   }
 
   /**
@@ -192,12 +201,18 @@ class Request
    * @param $data array Rules written in controller
    * @param $method string Name about type of the rule and of the method to call in ValidateRequest class
    * @param $input string Name input field
-   * @param $value string Value of the input field
+   * @param string|null $value string Value of the input field
    * @param string $rule string Rule
-   * @static
    * @return void
+   * @static
    */
-  public static function callRule(array $data, string $method, string $input, string|null $value, mixed $rule): void
+  public static function callRule(
+    array $data,
+    string $method,
+    string $input,
+    string|null $value,
+    mixed $rule
+  ): void
   {
     $obj = "Src\Validation\ValidateRequest";
 
@@ -211,7 +226,7 @@ class Request
    *
    * @param array $data
    * @return mixed
-   * @throws \Exception
+   * @throws Exception
    */
   public static function validate(array $data): mixed
   {
@@ -225,7 +240,7 @@ class Request
         $rule = array_values($array[$k]);
         $input[$k] = ['value' => $value, 'method' => $method, 'rule' => $rule];
       } else {
-        throw new \Exception('Input field not exists');
+        throw new Exception('Input field not exists');
       }
     }
     

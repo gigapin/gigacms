@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Exception;
 use Src\Model;
 use Src\QueryBuilder;
 
@@ -22,12 +23,13 @@ use Src\QueryBuilder;
  */
 class Post extends QueryBuilder
 {
-	/**
-	 * Get id from posts table and username from users table where
-	 * user_id in posts table is equal to id in users table.
-	 *
-	 * @return array
-	 */
+  /**
+   * Get id from posts table and username from users table where
+   * user_id in posts table is equal to id in users table.
+   *
+   * @return array
+   * @throws Exception
+   */
 	public function users(): array
 	{
 		$sql = "SELECT posts.id, users.username 
@@ -39,13 +41,14 @@ class Post extends QueryBuilder
 		return $stmt->fetchAll(\PDO::FETCH_OBJ);
 	}
 
-	/**
-	 * Get username from users table where user_id in posts table 
-	 * is equal to id in users table and id from posts is matched to $id argument.
-	 *
-	 * @param integer $id
-	 * @return array
-	 */
+  /**
+   * Get username from users table where user_id in posts table
+   * is equal to id in users table and id from posts is matched to $id argument.
+   *
+   * @param integer $id
+   * @return array
+   * @throws Exception
+   */
 	public function user(int $id): array 
 	{
 		$sql = "SELECT users.username 

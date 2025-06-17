@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Src;
 
-use \Exception;
-use \PDO;
+use Exception;
+use PDO;
 use Src\Database\DatabaseConnection;
 
 /**

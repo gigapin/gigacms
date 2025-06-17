@@ -210,7 +210,7 @@ class PostController extends Controller
 
     try {
       if (!$post) {
-        return throw new \Exception('Post not found');
+        return throw new Exception('Post not found');
       }
     } catch (Exception $exc) {
       printf("%s", $exc->getMessage());
@@ -327,7 +327,7 @@ class PostController extends Controller
 
     try {
       if (!$post) {
-        throw new \Exception('Post not found');
+        throw new Exception('Post not found');
       }
 
       $this->categoryPost->deleteCategoryPost($id);

@@ -9,6 +9,7 @@
  */
 declare(strict_types=1);
 
+use JetBrains\PhpStorm\NoReturn;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -28,7 +29,7 @@ use Src\Http\Redirect;
  * @param mixed $data
  */
 if (! function_exists('dd')) :
-  function dd(mixed $data)
+  #[NoReturn] function dd(mixed $data): void
   {
     echo '<pre>';
     var_dump($data);
@@ -42,16 +43,16 @@ endif;
  * 
  * @param string $path
  * @param array $data
- * @throws \Exception
+ * @throws Exception
  */
 if (! function_exists('view')) :
-  function view(string $path, array $data = []): View
+  function view(string $path, array $data = []): void
   {
-      try {
-          View::render($path, $data);
-      } catch (Exception $e) {
-          View::show500();
-      }
+    try {
+        View::render($path, $data);
+    } catch (Exception $e) {
+        View::show500();
+    }
   }
 endif;
 
@@ -61,7 +62,7 @@ endif;
  * @param string $url
  */
 if (! function_exists('redirect')) :
-  function redirect(string $url)
+  function redirect(string $url): void
   {
     Redirect::to($url);
   }
@@ -73,7 +74,7 @@ endif;
  * @return void
  */
 if (! function_exists('back')) :
-  function back()
+  function back(): void
   {
     Redirect::back();
   }
@@ -86,7 +87,7 @@ endif;
  * @return string
  */
 if (!function_exists('slug')) :
-  function slug(string $value)
+  function slug(string $value): string
   {
     return strtolower(str_replace(' ', '-', $value));
   }
@@ -98,7 +99,7 @@ endif;
  * @return mixed
 */
 if (!function_exists('setDate')) :
-  function setDate()
+  function setDate(): string
   {
     return date('Y-m-d H:i:s', time());
   }

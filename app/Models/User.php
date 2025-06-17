@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Exception;
 use Src\Model;
 use Src\QueryBuilder;
 
@@ -71,9 +72,10 @@ class User extends QueryBuilder
 	public int $min_password = 8;
 
   /**
-   * Get role name from users table. 
-   * 
+   * Get role name from users table.
+   *
    * @return mixed
+   * @throws Exception
    */
 	public function role(): mixed
   {
@@ -85,7 +87,12 @@ class User extends QueryBuilder
     return $stmt->fetch(\PDO::FETCH_OBJ);
   }
 
-	public function roles(int $id = 2): mixed
+  /**
+   * @param int $id
+   * @return array
+   * @throws Exception
+   */
+  public function roles(int $id = 2): array
   {
     $sql = "SELECT roles.name_role FROM
       users INNER JOIN roles

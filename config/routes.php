@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 use App\Controllers\Admin\RoleController;
 use App\Controllers\HomeController;
-use App\Controllers\TestsController;
-use App\Controllers\Admin\TagController;
+//use App\Controllers\Admin\TagController;
 use App\Controllers\Admin\MenuController;
 use App\Controllers\Admin\PostController;
 use App\Controllers\Admin\RolePermissionController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\Admin\LoginController;
-use App\Controllers\Admin\LibraryController;
+//use App\Controllers\Admin\LibraryController;
 use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\MenuItemController;
 use App\Controllers\Admin\RegisterController;
@@ -42,7 +41,7 @@ $route->get('/api/v1/test', [TestController::class, 'index']);
 $route->get('/api/v1/posts', [ApiPostController::class, 'index']);
 $route->get('/api/v1/blog', [ApiPostController::class, 'blog']);
 $route->get('/api/v1/posts/{slug}', [ApiPostController::class, 'show']);
-$route->get('/api/v1/menuitems', [ApiMenuItemsController::class, 'index']);
+$route->get('/api/v1/menu-items', [ApiMenuItemsController::class, 'index']);
 $route->get('/api/v1/categories', [ApiCategoryController::class, 'index']);
 $route->get('/api/v1/categories/{slug}', [ApiCategoryController::class, 'show']);
 $route->get('/api/v1/menus', [ApiMenuController::class, 'index']);
@@ -52,7 +51,7 @@ $route->get('/', [HomeController::class, 'index']);
 
 $route->get('/login', [LoginController::class, 'login']);
 $route->get('/logout', [LoginController::class, 'logout']);
-$route->post('/signin', [LoginController::class, 'signin']);
+$route->post('/sign-in', [LoginController::class, 'signin']);
 $route->get('/register', [RegisterController::class, 'register']);
 $route->post('/signup', [RegisterController::class, 'signup']);
 
@@ -60,9 +59,9 @@ $route->post('/signup', [RegisterController::class, 'signup']);
 $route->get('/dashboard', [DashboardController::class, 'index']);
 
 /** LIBRARY */
-$route->get('/library', [LibraryController::class, 'index']);
+/*$route->get('/library', [LibraryController::class, 'index']);
 $route->post('/library', [LibraryController::class, 'store']);
-$route->post('/library/{id}', [LibraryController::class, 'delete']);
+$route->post('/library/{id}', [LibraryController::class, 'delete']);*/
 
 /** POSTS */
 $route->get('/posts', [PostController::class, 'index']);
@@ -105,10 +104,10 @@ $route->post('/settings', [SettingController::class, 'store']);
 $route->post('/settings/clean-cache', [SettingController::class, 'cleanCache']);
 
 /** TAGS */
-$route->post('/tags/delete/{slug}', [TagController::class, 'delete']);
+//$route->post('/tags/delete/{slug}', [TagController::class, 'delete']);
 
 /** TEST PHP */
-$route->get('/tests', [TestsController::class, 'index']);
+//$route->get('/tests', [TestsController::class, 'index']);
 
 /** REVISIONS */
 $route->get('/revisions/{id}', [RevisionController::class, 'index']);

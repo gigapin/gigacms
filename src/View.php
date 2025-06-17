@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Src;
 
 use Exception;
+use Src\Database\DatabaseConnectionException;
 
 /**
  * @package GiGaFlow\View
@@ -32,6 +33,7 @@ class View
   {
     extract($data, EXTR_SKIP);
     $realPath = realpath(__DIR__ . "/../resources/views/" . $path . ".php");
+
     try {
       if (file_exists($realPath) && is_readable($realPath)) {
           return require __DIR__ . "/../resources/views/$path.php";
@@ -39,16 +41,17 @@ class View
         throw new Exception("$realPath not found");
       }
     } catch (Exception $exc) {
-      printf("%s", $exc->getMessage());
+      return printf("%s", $exc->getMessage());
     } 
   }
 
   /**
    * Rendering of a page that show a 404 error message.
-   * 
+   *
    * @param string $exception
    * @static
    * @return void
+   * @throws Exception
    */
   public static function show404(string $exception): void
   {
@@ -57,10 +60,11 @@ class View
 
   /**
    * Rendering of a page that show a 500 error message.
-   * 
+   *
    * @param array $exception
    * @static
    * @return void
+   * @throws Exception
    */
   public static function show500(array $exception = []): void
   {
@@ -68,35 +72,40 @@ class View
   }
 
   /**
-   * Rendering of a page that show a error message.
-   * 
+   * Rendering of a page that show an error message.
+   *
    * @param array $errors
    * @static
    * @return void
+   * @throws Exception
    */
   public static function showError(array $errors = []): void
   {
     self::render('errors/error', ['errors' => $errors]);
   }
 
- /**
-   * Rendering of a page that show a error message about an exception raised.
-   * 
-   * @param string $exception
+  /**
+   * Rendering of a page that show an error message about an exception raised.
+   *
+   * @param Exception|Database\DatabaseConnectionException $exception
    * @static
    * @return void
+   * @throws Exception
    */
-  public static function showErrorException($exception): void
+  public static function showErrorException(
+    Exception|DatabaseConnectionException $exception
+  ): void
   {
     self::render('errors/errorException', compact('exception'));
   }
 
   /**
    * Rendering of a page that show a message about an exception raised.
-   * 
+   *
    * @param string $exception
    * @static
    * @return void
+   * @throws Exception
    */
   public static function showException(string $exception): void
   {
@@ -104,11 +113,12 @@ class View
   }
 
   /**
-   * Rendering of a page displayed when is not active an user session.
+   * Rendering of a page displayed when is not active a user session.
    *
    * @param string $exception
    * @param integer $code
    * @return void
+   * @throws Exception
    */
   public static function showExceptionWithRedirectToLogin(string $exception, int $code): void 
   {

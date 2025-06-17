@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Exception;
+use PDO;
 use Src\Model;
 use Src\QueryBuilder;
 
@@ -25,17 +27,18 @@ use Src\QueryBuilder;
 class DefaultRolePermission extends QueryBuilder
 {
   /**
-   * Get name of the a role in relation with role_permissions table.
+   * Get name of the role in relation with role_permissions table.
    *
-   * @return mixed
+   * @return array
+   * @throws Exception
    */
-  public function role(): mixed
+  public function role(): array
   {
     $query = "SELECT roles.name_role, roles.id FROM
       role_permissions INNER JOIN roles
       ON role_permissions.role_id = roles.id";
     $stmt = Model::getDB()->query($query);
     
-    return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
   }
 }

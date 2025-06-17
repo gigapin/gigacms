@@ -29,8 +29,8 @@ class AuthException extends Exception
     $this->redirectLoginPage($message, $code);
   }
 
-  public function redirectLoginPage($message, $code)
+  public function redirectLoginPage($message, $code): void
   {
-    return View::showExceptionWithRedirectToLogin($message, $code);
+    View::showExceptionWithRedirectToLogin($message, $code);
   }
 }

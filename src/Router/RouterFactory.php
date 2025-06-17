@@ -14,6 +14,7 @@ namespace Src\Router;
 
 use Exception;
 use Src\Http\Request;
+use UnexpectedValueException;
 
 /**
  * 
@@ -26,27 +27,29 @@ class RouterFactory
   /**
    * Instance Router class and verify if is an instance of RouterInterface.
    *
-   * @throws \Exception
-   * @throws \UnexpectedValueException
-   * @static
    * @return Router
+   * @throws UnexpectedValueException
+   * @static
+   * @throws Exception
    */
   public static function build(): Router
   {
     $file = dirname(__DIR__) . '/../config/routes.php';
+
     if (! file_exists($file)) {
-      throw new \Exception("File about routing table not found");
+      throw new Exception("File about routing table not found");
     }
 
     $request = new Request();
     $route = new Router($request);
-    if (! $route instanceof RouterInterface) {
-      throw new \UnexpectedValueException("Not valid Router object");
-    }
-    
+
     include dirname(__DIR__) . '/../config/routes.php';
     $route->match($request->uri());
-    
+
+    if (! $route instanceof RouterInterface) {
+      throw new UnexpectedValueException("Not valid Router object");
+    }
+
     return $route;
   }
 }

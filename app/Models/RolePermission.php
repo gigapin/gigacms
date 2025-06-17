@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Exception;
 use Src\Model;
 use Src\QueryBuilder;
 
@@ -27,9 +28,10 @@ class RolePermission extends QueryBuilder
   /**
    * Get name of the a role in relation with role_permissions table.
    *
-   * @return mixed
+   * @return array
+   * @throws Exception
    */
-  public function role(): mixed
+  public function role(): array
   {
     $query = "SELECT roles.name_role, roles.id FROM
       role_permissions INNER JOIN roles

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Src\Validation;
 
-use App\Models\Post;
+use Exception;
 use Src\Http\Request;
 use Src\Http\Redirect;
 use Src\Session\Session;
@@ -112,7 +112,7 @@ class ValidateRequest
   }
 
   /**
-   * Rule that allowed of enterd only alpha characters.
+   * Rule that allowed of entered only alpha characters.
    * 
    * @param string $input
    * @param string $value
@@ -127,7 +127,7 @@ class ValidateRequest
   }
 
   /**
-   * Rule that allowed of enterd only numeric characters.
+   * Rule that allowed of entered only numeric characters.
    * 
    * @param string $input
    * @param string $value
@@ -152,6 +152,7 @@ class ValidateRequest
   public static function now(string $input, string $value): void
   {
     $time = date_timestamp_get(date_create($value));
+
     if ($time < time()) {
       self::$errors[$input] = "The date cannot be older of the current time";
     }
@@ -165,7 +166,11 @@ class ValidateRequest
    * @param array $rule
    * @return void
    */
-  public static function unique(string $input, string $value, array $rule)
+  public static function unique(
+    string $input,
+    string $value,
+    array $rule
+  ): void
   {
     $obj = $rule[1];
     $record = $obj->findWhere($input, $value);
@@ -208,13 +213,14 @@ class ValidateRequest
    
   }
 
-   /**
+  /**
    * Storing data in a session get from a form.
-   * 
+   *
    * @param array $errors
    * @param string $path
    * @static
    * @return void
+   * @throws Exception
    */
   public static function storingSession(array $errors, string $path): void
   {
@@ -229,9 +235,10 @@ class ValidateRequest
    * of the message of error.
    *
    * @static
-   * @return void
+   * @return Session
+   * @throws Exception
    */
-  public static function unsetSession(): void
+  public static function unsetSession(): Session
   {
     Session::remove('errors');
     Session::remove('data-form');
@@ -241,12 +248,20 @@ class ValidateRequest
    * Update sessions for validation data.
    *
    * @param object $updatePost
+   * @param array $errors
+   * @param string $path
+   * @return Session|Redirect|null
+   * @throws Exception
    * @static
    */
-  public static function updateSession(object $updatePost, array $errors, string $path)
+  public static function updateSession(
+    object $updatePost,
+    array $errors,
+    string $path
+  ): null|Session|Redirect
   {
     if (Request::validate($errors) !== null) {
-      return redirect($path . $updatePost->post_name);
+      redirect($path . $updatePost->post_name);
     } elseif (Session::has('errors')) {
       Session::remove('errors');
     } else {
