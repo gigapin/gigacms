@@ -85,6 +85,7 @@ class Application
    * Initialize Authorization class.
    *
    * @return string|null
+   * @throws Exception
    */
     protected function initAuthorization(): ?string
     {

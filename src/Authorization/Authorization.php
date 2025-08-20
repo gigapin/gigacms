@@ -28,7 +28,7 @@ class Authorization implements AuthorizationInterface
   /**
    * @inheritDoc
    */
-  public function init()
+  public function init(): void
   {
     try {
       if (is_null(Session::get('user'))) {
@@ -54,7 +54,7 @@ class Authorization implements AuthorizationInterface
         //   throw new AuthException('You cannot to access at this resource', 403);
         // }
         
-        return Session::get('user');
+        Session::get('user');
       }
     } catch (AuthException $exc) {
       printf('%s %d', $exc->getMessage(), $exc->getCode());

@@ -41,14 +41,15 @@ class RegisterController extends Controller
 		$this->user = new User('users');
 	}
 
-	/**
-	 * Display a form for create a new user.
-	 *
-	 * @return View
+  /**
+   * Display a form for create a new user.
+   *
+   * @return void
+   * @throws Exception
    */
-	public function register(): View
+	public function register(): void
   {
-		return view('auth/register', [
+		view('auth/register', [
 			'token' => CSRFToken::token()
 		]);
 	}
@@ -56,10 +57,10 @@ class RegisterController extends Controller
   /**
    * Storing data for create a new user instance.
    *
-   * @return bool|View
+   * @return void
    * @throws Exception
    */
-	public function signup(): bool|View
+	public function signup(): void
   {
 		$errors = $this->request()->validate([
 			'username' => [
@@ -82,7 +83,7 @@ class RegisterController extends Controller
 		}
 
 		if ($errors) {
-			return view('auth/register', ['errors' => $errors]);
+			view('auth/register', ['errors' => $errors]);
 		}
 		
 		$data = [
@@ -98,7 +99,5 @@ class RegisterController extends Controller
 		$this->user->insert($data);
 		
 		Redirect::to('login');
-
-    return true;
 	}
 }

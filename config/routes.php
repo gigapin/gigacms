@@ -51,7 +51,7 @@ $route->get('/', [HomeController::class, 'index']);
 
 $route->get('/login', [LoginController::class, 'login']);
 $route->get('/logout', [LoginController::class, 'logout']);
-$route->post('/sign-in', [LoginController::class, 'signin']);
+$route->post('/sign-in', [LoginController::class, 'sign_in']);
 $route->get('/register', [RegisterController::class, 'register']);
 $route->post('/signup', [RegisterController::class, 'signup']);
 
@@ -67,7 +67,7 @@ $route->post('/library/{id}', [LibraryController::class, 'delete']);*/
 $route->get('/posts', [PostController::class, 'index']);
 $route->get('/posts/create', [PostController::class, 'create']);
 $route->post('/posts', [PostController::class, 'store']);
-$route->get('/posts/edit/{id}', [PostController::class, 'edit']);
+$route->get('/posts/{id}/edit', [PostController::class, 'edit']);
 $route->post('/posts/{id}', [PostController::class, 'update']);
 $route->post('/posts/delete/{id}', [PostController::class, 'delete']);
 $route->get('/posts/{slug}', [PostController::class, 'show']);

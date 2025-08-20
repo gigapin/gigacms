@@ -9,10 +9,6 @@
  */
 declare(strict_types=1);
 
-use JetBrains\PhpStorm\NoReturn;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Src\View;
 use Src\Http\Redirect;
 
@@ -29,7 +25,7 @@ use Src\Http\Redirect;
  * @param mixed $data
  */
 if (! function_exists('dd')) :
-  #[NoReturn] function dd(mixed $data): void
+  function dd(mixed $data): void
   {
     echo '<pre>';
     var_dump($data);

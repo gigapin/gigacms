@@ -83,14 +83,14 @@ class SettingController extends Controller
    */
   public function index(): View
   {
-    $role = $this->user->findWhere('username', Session::get('user'));
+    $user = $this->user->findWhere('username', Session::get('user'));
    
     try {
-      if ($role->role !== 1 && $role->role !== 2) {
+      /*if ($user->role !== 1 && $user->role !== 2) {
         throw new AuthException('Cannot access to this resource');
-      }
+      }*/
 
-      return view('settings/index', [
+      view('settings/index', [
         'token' => CSRFToken::token(),
         'settings' => $this->setting
       ]);

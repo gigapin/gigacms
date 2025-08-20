@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Src\Database;
 
 use Src\View;
-use \Exception;
-use \PDO;
+use Exception;
+use PDO;
 
 /**
  * @package GiGaFlow\Database
@@ -79,9 +79,7 @@ class DatabaseConnection implements DatabaseConnectionInterface
 
       return $this->db;
     } catch (DatabaseConnectionException $exception) {
-      View::showErrorException($exception);
-    } finally {
-      return $this->db = null;
+      return View::showErrorException($exception);
     }
   }
 

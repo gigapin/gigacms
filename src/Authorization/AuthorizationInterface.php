@@ -30,5 +30,5 @@ interface AuthorizationInterface
    * @throws AuthException
    * @return mixed
    */
-  public function init(): mixed;
+  public function init(): void;
 }

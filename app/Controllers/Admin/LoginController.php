@@ -54,14 +54,15 @@ class LoginController extends Controller
 		$this->model = new User('users');
 	}
 
-	/**
-	 * Display a form for log in.
-	 *
-	 * @return View
+  /**
+   * Display a form for log in.
+   *
+   * @return void
+   * @throws Exception
    */
-	public function login(): View
+	public function login(): void
   {
-		return view('auth/login', [
+		view('auth/login', [
 			'token' => CSRFToken::token()
 		]);
 	}
@@ -72,7 +73,7 @@ class LoginController extends Controller
    * @return int|View|bool
    * @throws Exception
    */
-	public function signin(): int|View|bool
+	public function sign_in(): int|View|bool
   {
 		CSRFToken::verifyToken();
 		$errors = $this->request()->validate([
@@ -86,7 +87,7 @@ class LoginController extends Controller
 		]);
 		
 		if ($errors) {
-			return view('auth/login', ['errors' => $errors]);
+			view('auth/login', ['errors' => $errors]);
 		}
 		
 		try {	
@@ -100,7 +101,7 @@ class LoginController extends Controller
 			Redirect::to('dashboard');
 
 			return true;
-		} catch (\Exception $exc) {
+		} catch (Exception $exc) {
 			return printf("%s", $exc->getMessage());
 		}
 	}

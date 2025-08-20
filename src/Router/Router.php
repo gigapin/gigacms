@@ -71,7 +71,7 @@ class Router implements RouterInterface
     $route = preg_replace("/{([a-z]+)}/", "([a-z0-9\-]+)", $route);
     $regexRoute = "/^" . $route . "$/";
     $this->routes[$regexRoute][] = $params;
-
+    
     return $this->routes;
   }
 

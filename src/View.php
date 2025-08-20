@@ -33,7 +33,7 @@ class View
   {
     extract($data, EXTR_SKIP);
     $realPath = realpath(__DIR__ . "/../resources/views/" . $path . ".php");
-
+    
     try {
       if (file_exists($realPath) && is_readable($realPath)) {
           return require __DIR__ . "/../resources/views/$path.php";
@@ -89,14 +89,14 @@ class View
    *
    * @param Exception|Database\DatabaseConnectionException $exception
    * @static
-   * @return void
+   * @return mixed
    * @throws Exception
    */
   public static function showErrorException(
     Exception|DatabaseConnectionException $exception
-  ): void
+  ): mixed
   {
-    self::render('errors/errorException', compact('exception'));
+    return self::render('errors/errorException', compact('exception'));
   }
 
   /**

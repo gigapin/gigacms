@@ -38,9 +38,9 @@ class DashboardController extends Controller
    * @return View
    * @throws Exception
    */
-  public function index(): View
+  public function index(): void
   {
-    return view('dashboard/index', [
+    view('dashboard/index', [
       'posts' => $this->posts->findLatest('user_id', Auth::id(), 6),
       'username' => $this->posts->users(),
     ]);

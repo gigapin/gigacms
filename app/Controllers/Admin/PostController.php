@@ -108,11 +108,11 @@ class PostController extends Controller
    * @return View
    * @throws Exception
    */
-  public function index(): View
+  public function index(): void
   {
     $posts = $this->post->findAllWhere('user_id', Auth::id());
 
-    return view('posts/index', [
+    view('posts/index', [
       'posts' => $posts,
       'token' => CSRFToken::token(),
       'username' => $this->post->users(),
@@ -126,9 +126,9 @@ class PostController extends Controller
    * @return View
    * @throws Exception
    */
-  public function create(): View
+  public function create(): void
   { 
-    return view('posts/create', [
+    view('posts/create', [
       'token' => CSRFToken::token(),
       'categories' => $this->category->findAll(),
       'posts' => $this->post->findAll(),
@@ -197,7 +197,7 @@ class PostController extends Controller
    * @return View
    * @throws Exception
    */
-  public function show(string $slug): View
+  public function show(string $slug): void
   {
     $post = $this->post->findWhere('post_name', $slug);
 
@@ -210,13 +210,13 @@ class PostController extends Controller
 
     try {
       if (!$post) {
-        return throw new Exception('Post not found');
+        throw new Exception('Post not found');
       }
     } catch (Exception $exc) {
       printf("%s", $exc->getMessage());
     }
 
-    return view('posts/show', [
+    view('posts/show', [
       'post' => $post,
       'users' => $this->post->user($post->id),
       'category' => $category,
@@ -231,7 +231,7 @@ class PostController extends Controller
    * @return int|View
    * @throws Exception
    */
-  public function edit(string $slug): int|View
+  public function edit(string $slug): void
   {
     $post = $this->post->findWhereAnd(
       'post_name',
@@ -245,7 +245,7 @@ class PostController extends Controller
         throw new Exception('Post not found');
       }
 
-      return view('posts/edit', [
+      view('posts/edit', [
         'post' => $post,
         'token' => CSRFToken::token(),
         'categories' => $this->category->findAll(),
@@ -255,7 +255,7 @@ class PostController extends Controller
         'metadata' => $this->metadata->getMetadataWhere($post->id)
       ]);
     } catch (Exception $exc) {
-      return printf("%s", $exc->getMessage());
+      printf("%s", $exc->getMessage());
     }
   }
 
